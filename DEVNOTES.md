@@ -10,3 +10,4 @@ Lessons learned (plans, successes, mistakes, improvements)
   * Looking at: [Tabulator](http://tabulator.info/examples/4.1?#filter-header) and [DataTables](https://datatables.net/extensions/fixedheader/examples/options/columnFiltering.html)
 * Want to base design on: [Dashboard Theme](https://bootstrap-themes.github.io/dashboard/index.html)
 * Started creating some POCs for DataTables. Definitely the best bet so far. Got responsive table and filterable table working. Now need to combine them.
+* Started a GitHub Project in the repo to track issues. Broke them apart into 3 one-week sprints with cleaning at the end of each sprint
