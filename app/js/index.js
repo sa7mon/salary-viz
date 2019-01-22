@@ -9,7 +9,7 @@
 // TENURE_DEC_YR_MO, EMPT_STATE_DATE,BASE,YTD
 var csvData; 
 
-$(document).ready(init());
+// $(document).ready(init());
 
 function init() {
 	loadData();
