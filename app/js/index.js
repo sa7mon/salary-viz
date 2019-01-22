@@ -19,7 +19,7 @@ function init() {
 function loadData() {
 	$.ajax({
         type: "GET",
-        url: "data_sampled.csv",
+        url: "data/data_sampled.csv",
         dataType: "text",
         success: function(data) {
         	csvData = $.csv.toObjects(data);
@@ -106,7 +106,7 @@ function createTable() {
 	// });
 
 	var table = $('#salary-table').DataTable( {
-		responsive: true,
+		responsive: false,
     } );
  
     new $.fn.dataTable.FixedHeader( table );
