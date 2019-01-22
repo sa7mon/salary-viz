@@ -1,5 +1,3 @@
-MNSU salary data visualization. IT680 - Spring 2019
-
 ## Project Analysis
 
 The project is to build a web-based tool that allows users to "explore" a dataset of MNSU salaries interactively. 
