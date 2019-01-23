@@ -5,16 +5,7 @@
 * 	License: MIT
 */
 
-// FIRST_LAST_INITIALS, LONG_DESC, COL_DIV_CODE, JOB_TITLE, 
-// TENURE_DEC_YR_MO, EMPT_STATE_DATE,BASE,YTD
 var csvData; 
-
-// $(document).ready(init());
-
-// function init() {
-// 	loadData();
-// }
-
 
 function loadData(handleData) {
 	$.ajax({
@@ -46,7 +37,16 @@ function createTable(csvData) {
 			{ "data": "LONG_DESC", "title": "Description"},
 			{ "data": "COL_DIV_CODE", "title": "Department"},
 			{ "data": "JOB_TITLE", "title": "Job Title"},
-			{ "data": "TENURE_DEC_YR_MO", "title": "Tenure Date"},
+			{ "data": "TENURE_DEC_YR_MO", 
+				"title": "Tenure Date",
+				"render": function(data, type, row){
+                	if(type === "sort" || type === "type" || data == ""){
+                    	return data;
+                	}
+                	// return moment(data).format("MM-DD-YYYY HH:mm");
+                	return moment(data, "YYYYMM").format("MMMM YYYY")
+            }			
+			},
 			{ "data": "EMPT_STATE_DATE", "title": "Start Date"},
 			{ "data": "BASE", "title": "Base"},
 			{ "data": "YTD", "title": "YTD"},
@@ -84,7 +84,6 @@ function createTable(csvData) {
             }
         } );
     } );
- 
 }
 
 
