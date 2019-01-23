@@ -51,10 +51,6 @@ function createTable(csvData) {
 			{ "data": "BASE", "title": "Base"},
 			{ "data": "YTD", "title": "YTD"},
 		],
-		"aoColumnDefs" : [ {
-            "bSortable" : false,
-            "aTargets" : [ "sorting_disabled" ]
-        } ],
 		orderCellsTop: true,
 		fixedHeader: true,
 		//responsive: true
@@ -64,17 +60,18 @@ function createTable(csvData) {
 	 * Add column filtering 
 	 * https://datatables.net/extensions/fixedheader/examples/options/columnFiltering.html
 	 */
-	// $('#salary-table thead tr').clone(false).appendTo( '#salary-table thead' );
 	var num_columns = $('#salary-table thead tr:eq(0) th').length;
 	$('#salary-table thead').append('<tr></tr>');
-	
 	for (var i=0; i < num_columns; i++) {
 		$('#salary-table thead tr:eq(1)').append('<th></th>');
 	}
-	
     $('#salary-table thead tr:eq(1) th').each( function (i) {
-		// $(this).addClass('sorting_disabled');
-        $(this).html( '<input type="text" placeholder="Search" />' );
+    	if (i == 0) {
+    		$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" />' );
+    	} else {
+    		$(this).html( '<input type="text" class="table-search" placeholder="Search" />' );
+    	}
+        
 		
         $( 'input', this ).on( 'keyup change', function () {
 			if ( table.column(i).search() !== this.value ) {
