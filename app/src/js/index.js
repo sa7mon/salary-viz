@@ -38,30 +38,8 @@ function loadData(handleData) {
 
 function createTable(csvData) {
 	
-	// /**
-	//  * Add column filtering 
-	//  * https://datatables.net/extensions/fixedheader/examples/options/columnFiltering.html
-	//  */
-	// $('#salary-table thead tr').clone(true).appendTo( '#salary-table thead' );
- //   $('#salary-table thead tr:eq(1) th').each( function (i) {
-	// 	var title = $(this).text();
- //       $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-		
- //       $( 'input', this ).on( 'keyup change', function () {
-	// 		if ( table.column(i).search() !== this.value ) {
-	// 			table
-	// 			.column(i)
-	// 			.search( this.value )
-	// 			.draw();
- //           }
- //       } );
- //   } );
-	
-	
 	// Initialize DataTable
     var table = $('#salary-table').DataTable( {
-        orderCellsTop: true,
-		fixedHeader: true,
 		data: csvData,
 		"columns": [
 			{ "data": "FIRST_LAST_INITIALS", "title": "Initials"},	
@@ -73,8 +51,41 @@ function createTable(csvData) {
 			{ "data": "BASE", "title": "Base"},
 			{ "data": "YTD", "title": "YTD"},
 		],
+		"aoColumnDefs" : [ {
+            "bSortable" : false,
+            "aTargets" : [ "sorting_disabled" ]
+        } ],
+		orderCellsTop: true,
+		fixedHeader: true,
 		//responsive: true
 	});
+	
+	/**
+	 * Add column filtering 
+	 * https://datatables.net/extensions/fixedheader/examples/options/columnFiltering.html
+	 */
+	// $('#salary-table thead tr').clone(false).appendTo( '#salary-table thead' );
+	var num_columns = $('#salary-table thead tr:eq(0) th').length;
+	$('#salary-table thead').append('<tr></tr>');
+	
+	for (var i=0; i < num_columns; i++) {
+		$('#salary-table thead tr:eq(1)').append('<th></th>');
+	}
+	
+    $('#salary-table thead tr:eq(1) th').each( function (i) {
+		// $(this).addClass('sorting_disabled');
+        $(this).html( '<input type="text" placeholder="Search" />' );
+		
+        $( 'input', this ).on( 'keyup change', function () {
+			if ( table.column(i).search() !== this.value ) {
+				table
+				.column(i)
+				.search( this.value )
+				.draw();
+            }
+        } );
+    } );
+ 
 }
 
 
