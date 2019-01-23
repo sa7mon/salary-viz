@@ -1,3 +1,7 @@
+/*
+*
+* D3 charts
+*/
 .chart div {
   font: 10px sans-serif;
   background-color: steelblue;
@@ -30,12 +34,6 @@ Single-colored icons can be modified like so:
 body {
   font-size: .875rem;
 }
-
-/*.feather {*/
-/*  width: 16px;*/
-/*  height: 16px;*/
-/*  vertical-align: text-bottom;*/
-/*}*/
 
 /*
  * Sidebar

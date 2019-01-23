@@ -4,6 +4,7 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const babel  = require('gulp-babel');
 const uglifycss = require('gulp-uglifycss');
+const { series, parallel} = require('gulp');
 
 gulp.task('app-js', function(cb) {
     pump([
@@ -27,8 +28,9 @@ gulp.task('app-css', function(cb) {
     ], cb); 
 });
 
-gulp.task('watch-js', function () {
+gulp.task('watch', function () {
     gulp.watch(['src/js/*.js'], gulp.series('app-js'));
+    gulp.watch(['src/css/*.css'], gulp.series('app-css'));
 });
 
-gulp.task('default', gulp.series('app-js'), function() {});
+gulp.task('default', gulp.series(parallel('app-js', 'app-css')), function() {});
