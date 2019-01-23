@@ -43,11 +43,18 @@ function createTable(csvData) {
                 	if(type === "sort" || type === "type" || data == ""){
                     	return data;
                 	}
-                	// return moment(data).format("MM-DD-YYYY HH:mm");
                 	return moment(data, "YYYYMM").format("MMMM YYYY")
-            }			
+            	}			
 			},
-			{ "data": "EMPT_STATE_DATE", "title": "Start Date"},
+			{ "data": "EMPT_STATE_DATE", 
+				"title": "Start Date",
+				"render": function(data, type, row){
+                	if(type === "sort" || type === "type" || data == ""){
+                    	return data;
+                	}
+                	return moment(data, "YYYYMMDD").format("MMM DD, YYYY")
+				}
+			},
 			{ "data": "BASE", "title": "Base"},
 			{ "data": "YTD", "title": "YTD"},
 		],
