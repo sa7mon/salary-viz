@@ -10,13 +10,13 @@
 
     <title>Salary Explorer - Table</title>
 
-
+    <!-- Vendor CSS -->
     <link rel="stylesheet" type="text/css" href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.bootstrap4.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css" />
 
-    <!-- Custom styles for this template -->
+    <!-- Custom CSS -->
     <link href="css/index.css" rel="stylesheet">
 </head>
 
@@ -95,13 +95,16 @@
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
 
     <!-- Other JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.8.9/jquery.csv.min.js" integrity="sha256-F8eQhL9KDGgaDitxiSyq6SnTCL0m67rt7niivBtH2rc="
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.8.9/jquery.csv.min.js" integrity="sha256-F8eQhL9KDGgaDitxiSyq6SnTCL0m67rt7niivBtH2rc=" crossorigin="anonymous"></script>
 
     <!-- Custom JS -->
     <script src="js/index.js"></script>
     <script>
-        $(document).ready(init());
+        $(document).ready(function() {
+            loadData(function(data) {
+                createTable(data);
+            });
+        });
     </script>
 </body>
 
