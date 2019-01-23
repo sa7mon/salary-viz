@@ -24,7 +24,6 @@
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">MNSU Salary Explorer v1.0</a>
     </nav>
-
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -32,35 +31,32 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" href="index.html">
-                                <span data-feather="home"></span>
+                                <svg class="icon icon-home">
+                                    <use xlink:href="img/symbol-defs.svg#icon-home"></use>
+                                </svg>
                                 Home <span class="sr-only"></span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="#">
-                                <span data-feather="users">(current)</span>
+                                <svg class="icon icon-table2">
+                                    <use xlink:href="img/symbol-defs.svg#icon-table2"></use>
+                                </svg>
                                 Table
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                                <span data-feather="bar-chart-2"></span>
+                                <svg class="icon icon-stats-bars">
+                                    <use xlink:href="img/symbol-defs.svg#icon-stats-bars"></use>
+                                </svg>
                                 Charts
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="layers"></span>
-                                About
-                            </a>
-                        </li>
                     </ul>
-
                 </div>
             </nav>
-
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
                     <h1 class="h2">Table</h1>
                 </div>
@@ -80,12 +76,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha256-WHwIASWxNdKakx7TceUP/BqWQYMcEIfeLNdFMoFfRWA=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
-
-    <!-- Icons -->
-    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-    <script>
-        feather.replace()
-    </script>
 
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
