@@ -16,3 +16,9 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Feather Icons used JS to replace icons and caused a flash when loading the page. Didn't like. Moved to using IcoMoon generated SVG's which load instantly now.
 * Updating the same template on multiple pages is now starting to get annoying. Should probably look at using Jeykyll / Hugo for static site generation.
 * Before I'm done, I'd like to reduce the number of CDN calls I'm making for libs. Either download them locally or use npm to pull in and then gulp to concat + minify
+
+1/23/19
+* Put off moving to a static site generator for now
+* Implemented Gulp and moved everyting to a src-dist organization. Made rules to concat, babel, and minify my app JS. Still need to get the libs downloaded (maybe with npm) 
+* Created a package.json file to keep track of the dev dependencies
+* Switched from generating the table in HTML and pointing DataTables at it to passing DataTables the data and having it generate the table. This way it will have greater control over how to format and render the data.
