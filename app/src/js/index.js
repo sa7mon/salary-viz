@@ -31,7 +31,7 @@ function loadData(handleData) {
 }
 
 function createTable(csvData) {
-	console.log(csvData);
+	// console.log(csvData);
 	// Initialize DataTable
     var table = $('#salary-table').DataTable( {
 		data: csvData,
@@ -60,21 +60,11 @@ function createTable(csvData) {
 			},
 			{ "data": "BASE", 
 				"title": "Base",
-				"render": function(data, type, row) {
-					if(type === "sort" || type === "type" || data == "") {
-						return data;
-					}
-					return "$" + formatMoney(data,2, ".", ",");
-				}
+				"render": renderMoney
 			},
 			{ "data": "YTD",
 				"title": "YTD",
-				"render": function(data, type, row) {
-					if(type === "sort" || type === "type" || data == "") {
-						return data;
-					}
-					return "$" + formatMoney(data,2, ".", ",");
-				}
+				"render": renderMoney
 			},
 		],
 		orderCellsTop: true,
@@ -125,6 +115,13 @@ function graph(data) {
 
 function toNumber(string) {
 	return Number(string.replace("$", ""))
+}
+
+function renderMoney(data, type, row) {
+	if(type === "sort" || type === "type" || data == "") {
+		return data;
+	}
+	return "$" + formatMoney(data,2, ".", ",");
 }
 
 function formatMoney(n, c, d, t) {
