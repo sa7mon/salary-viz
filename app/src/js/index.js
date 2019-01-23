@@ -18,6 +18,9 @@ function loadData(handleData) {
 				if (csvData[i]["BASE"] !== undefined) {
 					csvData[i]["BASE"] = Number(csvData[i]["BASE"].replace("$", "").replace(",",""));
 				}
+				if (csvData[i]["YTD"] !== undefined) {
+					csvData[i]["YTD"] = Number(csvData[i]["YTD"].replace("$", "").replace(",",""));
+				}
 			}
 			handleData(csvData);
         },
@@ -28,7 +31,7 @@ function loadData(handleData) {
 }
 
 function createTable(csvData) {
-	
+	console.log(csvData);
 	// Initialize DataTable
     var table = $('#salary-table').DataTable( {
 		data: csvData,
@@ -55,8 +58,24 @@ function createTable(csvData) {
                 	return moment(data, "YYYYMMDD").format("MMM DD, YYYY")
 				}
 			},
-			{ "data": "BASE", "title": "Base"},
-			{ "data": "YTD", "title": "YTD"},
+			{ "data": "BASE", 
+				"title": "Base",
+				"render": function(data, type, row) {
+					if(type === "sort" || type === "type" || data == "") {
+						return data;
+					}
+					return "$" + formatMoney(data,2, ".", ",");
+				}
+			},
+			{ "data": "YTD",
+				"title": "YTD",
+				"render": function(data, type, row) {
+					if(type === "sort" || type === "type" || data == "") {
+						return data;
+					}
+					return "$" + formatMoney(data,2, ".", ",");
+				}
+			},
 		],
 		orderCellsTop: true,
 		fixedHeader: true,
@@ -107,3 +126,15 @@ function graph(data) {
 function toNumber(string) {
 	return Number(string.replace("$", ""))
 }
+
+function formatMoney(n, c, d, t) {
+	/** https://stackoverflow.com/a/149099/2307994 **/
+  var c = isNaN(c = Math.abs(c)) ? 2 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
