@@ -33,6 +33,10 @@ input.table-search.width-0{
   width: 64px;
 }
 
+input.table-search.width-1 {
+  width: 97px;
+}
+
 
 body {
   font-size: .875rem;

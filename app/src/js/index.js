@@ -68,6 +68,8 @@ function createTable(csvData) {
     $('#salary-table thead tr:eq(1) th').each( function (i) {
     	if (i == 0) {
     		$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" />' );
+    	} else if (i == 4 || i == 5 || i == 6 || i == 7) {
+    		$(this).html( '<input type="text" class="table-search width-1" placeholder="Search" />' );
     	} else {
     		$(this).html( '<input type="text" class="table-search" placeholder="Search" />' );
     	}
