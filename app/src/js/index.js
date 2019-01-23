@@ -15,7 +15,6 @@ function init() {
 	loadData();
 }
 
-
 function loadData() {
 	$.ajax({
         type: "GET",
