@@ -7,6 +7,26 @@
   color: white;
 }
 
+/** IcoMoon **/
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+/* ==========================================
+Single-colored icons can be modified like so:
+.icon-name {
+  font-size: 32px;
+  color: red;
+}
+========================================== */
+
+
+
 body {
   font-size: .875rem;
 }
@@ -38,6 +58,7 @@ body {
   padding-top: .5rem;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  font-size: 19px;
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
