@@ -4,9 +4,13 @@
   "description": "IT680 - Spring 2019",
   "main": "gulpfile.js",
   "dependencies": {
+    "bootstrap": "^4.2.1",
     "datatables.net-bs4": "^1.10.19",
     "datatables.net-fixedheader-bs4": "^3.1.5",
-    "datatables.net-responsive-bs4": "^2.2.3"
+    "datatables.net-responsive-bs4": "^2.2.3",
+    "jquery-csv": "^0.8.9",
+    "moment": "^2.24.0",
+    "popper.js": "^1.14.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

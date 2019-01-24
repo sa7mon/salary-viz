@@ -22,10 +22,15 @@ gulp.task('app-js', function(cb) {
 gulp.task('vendor-js', function(cb) {
     pump([
         gulp.src([
+            // 'node_modules/jquery/dist/jquery.min.js',
+            // 'node_modules/popper.js/dist/popper.min.js',
+            // 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+            'src/js/jquery.dataTables.min.js',
             'node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js',
             'node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js',
             'node_modules/datatables.net-responsive/js/dataTables.responsive.min.js',
-            'node_modules/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'
+            'node_modules/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js',
+            'node_modules/jquery-csv/src/jquery.csv.min.js',
         ]),
         concat('vendor.min.js'),
         gulp.dest('dist/js/'),
