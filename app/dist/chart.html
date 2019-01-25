@@ -11,14 +11,9 @@
 	<link rel="stylesheet" type="text/css" href="css/app.min.css" />
 </head>
 <body>
-	<div class="jumbotron jumbotron-fluid">
-	  <div class="container">
-	    <h1 class="display-4">MNSU Salary Visualization</h1>
-	    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-	  </div>
-	</div>
 
 	<div class="chart"></div>
+	<svg />
 
 
 	<!-- Bootstrap JS -->
@@ -35,7 +30,7 @@
     <script>
         $(document).ready(function() {
             loadData(function(data) {
-                graph(data);
+                graph2(data);
             });
         });
     </script>

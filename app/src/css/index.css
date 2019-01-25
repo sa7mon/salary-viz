@@ -37,6 +37,11 @@ input.table-search.width-1 {
   width: 97px;
 }
 
+svg {
+  width: 100vw;
+  height: 100vh;
+}
+
 
 body {
   font-size: .875rem;

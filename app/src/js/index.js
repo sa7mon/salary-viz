@@ -7,6 +7,22 @@
 
 var csvData; 
 
+const graphSample = [
+	{
+		COL_DIV_CODE: 'Academic Affairs',
+		BASE: 67778.9,
+	},
+	{
+		COL_DIV_CODE: 'Finance and Administration',
+		BASE: 75000.1,
+	},
+	{
+		COL_DIV_CODE: 'Arts and Humanities, College of',
+		BASE: 68109.0,
+	},
+];
+
+
 function loadData(handleData) {
 	$.ajax({
         type: "GET",
@@ -102,15 +118,56 @@ function createTable(csvData) {
     } );
 }
 
-
 function graph(data) {
 	d3.select(".chart")
 	.selectAll("div")
 	.data(data)
 		.enter()
 		.append("div")
-		.style("width", function(d) { return d["BASE"] / 1000 + "px"; })
+		.style("width", function(d) { return d["BASE"] / 100 + "px"; })
 		.text(function(d) { return d["BASE"]; });
+}
+
+function graph2(data) {
+	const margin = 80;
+    const width = 1000 - 2 * margin;
+    const height = 600 - 2 * margin;
+    
+    const maxObj = graphSample.reduce(function(max, obj) {
+		return obj.BASE > max.BASE? obj : max;
+	});
+	
+	const svg = d3.select('svg');
+	const chart = svg.append('g')
+    .attr('transform', `translate(${margin}, ${margin})`);
+    
+    // Draw Y scale
+    const yScale = d3.scaleLinear()
+    .range([height, 0])
+    .domain([0, maxObj.BASE]);
+    
+    chart.append('g')
+    	.call(d3.axisLeft(yScale));
+    
+    // Draw X scale
+    const xScale = d3.scaleBand()
+	    .range([0, width])
+	    .domain(graphSample.map((s) => s.COL_DIV_CODE))
+	    .padding(0.2)
+
+	chart.append('g')
+	    .attr('transform', `translate(0, ${height})`)
+	    .call(d3.axisBottom(xScale));
+	
+	// Draw bars
+	// chart.selectAll()
+	//     .data(goals)
+	//     .enter()
+	//     .append('rect')
+	//     .attr('x', (s) => xScale(s.language))
+	//     .attr('y', (s) => yScale(s.value))
+	//     .attr('height', (s) => height - yScale(s.value))
+	//     .attr('width', xScale.bandwidth())
 }
 
 function toNumber(string) {
