@@ -165,6 +165,14 @@ function graph2(data) {
 	chart.append('g')
 	    .attr('transform', `translate(0, ${height})`)
 	    .call(d3.axisBottom(xScale));
+	    
+	// Draw gridlines - horizontal
+	chart.append('g')
+	    .attr('class', 'grid')
+	    .call(d3.axisLeft()
+	        .scale(yScale)
+	        .tickSize(-width, 0, 0)
+	        .tickFormat(''))
 	
 	// Draw bars
 	chart.selectAll()
@@ -175,6 +183,22 @@ function graph2(data) {
 	    .attr('y', (s) => yScale(s.BASE))
 	    .attr('height', (s) => height - yScale(s.BASE))
 	    .attr('width', xScale.bandwidth());
+	    
+	// Axis labels
+	svg.append('text')
+	    .attr('x', -(height / 2) - margin)
+	    .attr('y', margin / 2.4)
+	    .attr('transform', 'rotate(-90)')
+	    .attr('text-anchor', 'middle')
+	    .text('Base ($)');
+
+	svg.append('text')
+	    .attr('x', width / 2 + margin)
+	    .attr('y', height + 120)
+	    .attr('text-anchor', 'middle')
+	    .text('X Label');
+	    
+
 }
 
 // function toNumber(string) {
