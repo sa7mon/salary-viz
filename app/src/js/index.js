@@ -5,6 +5,8 @@
 * 	License: MIT
 */
 
+/* global d3 */
+
 var csvData; 
 
 const graphSample = [
@@ -129,11 +131,16 @@ function graph(data) {
 }
 
 function graph2(data) {
+	/*
+	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
+	*/
+	
 	const margin = 80;
     const width = 1000 - 2 * margin;
     const height = 600 - 2 * margin;
     
     const maxObj = graphSample.reduce(function(max, obj) {
+    	// https://stackoverflow.com/a/35690350/2307994
 		return obj.BASE > max.BASE? obj : max;
 	});
 	
@@ -153,26 +160,26 @@ function graph2(data) {
     const xScale = d3.scaleBand()
 	    .range([0, width])
 	    .domain(graphSample.map((s) => s.COL_DIV_CODE))
-	    .padding(0.2)
+	    .padding(0.2);
 
 	chart.append('g')
 	    .attr('transform', `translate(0, ${height})`)
 	    .call(d3.axisBottom(xScale));
 	
 	// Draw bars
-	// chart.selectAll()
-	//     .data(goals)
-	//     .enter()
-	//     .append('rect')
-	//     .attr('x', (s) => xScale(s.language))
-	//     .attr('y', (s) => yScale(s.value))
-	//     .attr('height', (s) => height - yScale(s.value))
-	//     .attr('width', xScale.bandwidth())
+	chart.selectAll()
+	    .data(graphSample)
+	    .enter()
+	    .append('rect')
+	    .attr('x', (s) => xScale(s.COL_DIV_CODE))
+	    .attr('y', (s) => yScale(s.BASE))
+	    .attr('height', (s) => height - yScale(s.BASE))
+	    .attr('width', xScale.bandwidth());
 }
 
-function toNumber(string) {
-	return Number(string.replace("$", ""))
-}
+// function toNumber(string) {
+// 	return Number(string.replace("$", ""))
+// }
 
 function renderMoney(data, type, row) {
 	if(type === "sort" || type === "type" || data == "") {
