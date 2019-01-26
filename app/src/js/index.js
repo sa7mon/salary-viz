@@ -49,7 +49,7 @@ function loadData(handleData) {
 }
 
 function createTable(csvData) {
-	// console.log(csvData);
+	console.log(csvData);
 	// Initialize DataTable
     var table = $('#salary-table').DataTable( {
 		data: csvData,
@@ -223,3 +223,98 @@ function formatMoney(n, c, d, t) {
 
   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
+
+function groupByCollege() {
+	const sample2 = [
+		{
+			BASE: 44036,
+			COL_DIV_CODE: "Facilities Management",
+			EMPT_STATE_DATE: "20031017",
+			FIRST_LAST_INITIALS: "TB",
+			JOB_TITLE: "General Maintenance Wrkr Lead",
+			LONG_DESC: "Building Services",
+			TENURE_DEC_YR_MO: "",
+			YTD: 16357.55
+		},
+		{
+			BASE: 48399,
+			COL_DIV_CODE: "Undergraduate Education",
+			EMPT_STATE_DATE: "20110613",
+			FIRST_LAST_INITIALS: "TN",
+			JOB_TITLE: "MSUAASF Range C",
+			LONG_DESC: "Center for Academic Success",
+			TENURE_DEC_YR_MO: "",
+			YTD: 19113.9
+		},
+		{
+			BASE: 69381,
+			COL_DIV_CODE: "Facilities Management",
+			EMPT_STATE_DATE: "20160815",
+			FIRST_LAST_INITIALS: "MK",
+			JOB_TITLE: "State University Faculty",
+			LONG_DESC: "Biological Sciences",
+			TENURE_DEC_YR_MO: "202204",
+			YTD: 23954.94
+		},
+		{
+			BASE: 68471,
+			COL_DIV_CODE: "Facilities Management",
+			EMPT_STATE_DATE: "19970903",
+			FIRST_LAST_INITIALS: "JC",
+			JOB_TITLE: "MSUAASF Range C",
+			LONG_DESC: "Business, College of",
+			TENURE_DEC_YR_MO: "",
+			YTD: 25899.06
+		},
+		{
+			BASE: 74490,
+			COL_DIV_CODE: "Facilities Management",
+			EMPT_STATE_DATE: "20140818",
+			FIRST_LAST_INITIALS: "AD",
+			JOB_TITLE: "State University Faculty",
+			LONG_DESC: "Physics & Astronomy",
+			TENURE_DEC_YR_MO: "201904",
+			YTD: 17763
+		},
+		{
+			BASE: 48438,
+			COL_DIV_CODE: "Undergraduate Education",
+			EMPT_STATE_DATE: "20140609",
+			FIRST_LAST_INITIALS: "KS",
+			JOB_TITLE: "MSUAASF Range B",
+			LONG_DESC: "Center for English Language Programs",
+			TENURE_DEC_YR_MO: "",
+			YTD: 4098.59
+		},
+		{
+			BASE: 52367,
+			COL_DIV_CODE: "Undergraduate Education",
+			EMPT_STATE_DATE: "20110221",
+			FIRST_LAST_INITIALS: "TM",
+			JOB_TITLE: "Building Services Forman",
+			LONG_DESC: "Building Services",
+			TENURE_DEC_YR_MO: "",
+			YTD: 18953.44
+		}
+	];
+
+	let averages = {};
+	
+	console.log(typeof(sample2));
+	
+	sample2.forEach(function(element) {
+	  if (averages[element.COL_DIV_CODE] == undefined) {
+		averages[element.COL_DIV_CODE] = {};
+		averages[element.COL_DIV_CODE]["sum"] = element.BASE;
+		averages[element.COL_DIV_CODE]["count"] = 1;
+	  } else {
+	  	averages[element.COL_DIV_CODE]["sum"] += element.BASE;
+	  	averages[element.COL_DIV_CODE]["count"] += 1;
+	  }
+	  
+	  averages[element.COL_DIV_CODE]["average"] = averages[element.COL_DIV_CODE]["sum"] / averages[element.COL_DIV_CODE]["count"];
+	});
+	
+	console.log(averages);
+
+}
