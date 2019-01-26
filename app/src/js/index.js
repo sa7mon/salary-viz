@@ -300,20 +300,19 @@ function groupByCollege() {
 
 	let averages = {};
 	
-	console.log(typeof(sample2));
-	
-	sample2.forEach(function(element) {
-	  if (averages[element.COL_DIV_CODE] == undefined) {
-		averages[element.COL_DIV_CODE] = {};
-		averages[element.COL_DIV_CODE]["sum"] = element.BASE;
-		averages[element.COL_DIV_CODE]["count"] = 1;
-	  } else {
-	  	averages[element.COL_DIV_CODE]["sum"] += element.BASE;
-	  	averages[element.COL_DIV_CODE]["count"] += 1;
-	  }
-	  
-	  averages[element.COL_DIV_CODE]["average"] = averages[element.COL_DIV_CODE]["sum"] / averages[element.COL_DIV_CODE]["count"];
-	});
+	for (var i = 0, len = sample2.length; i < len; i++) {
+		let element = sample2[i];
+		
+		if (averages[element.COL_DIV_CODE] == undefined) {
+			averages[element.COL_DIV_CODE] = {};
+			averages[element.COL_DIV_CODE]["sum"] = element.BASE;
+			averages[element.COL_DIV_CODE]["count"] = 1;
+		} else {
+			averages[element.COL_DIV_CODE]["sum"] += element.BASE;
+			averages[element.COL_DIV_CODE]["count"] += 1;
+		}
+		averages[element.COL_DIV_CODE]["average"] = averages[element.COL_DIV_CODE]["sum"] / averages[element.COL_DIV_CODE]["count"];
+	};
 	
 	console.log(averages);
 
