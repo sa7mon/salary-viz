@@ -24,7 +24,6 @@ const graphSample = [
 	},
 ];
 
-
 function loadData(handleData) {
 	$.ajax({
         type: "GET",
@@ -201,9 +200,75 @@ function graph2(data) {
 
 }
 
-// function toNumber(string) {
-// 	return Number(string.replace("$", ""))
-// }
+function graphAverages(data) {
+	/*
+	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
+	*/
+	
+	const margin = 80;
+    const width = 1000 - 2 * margin;
+    const height = 600 - 2 * margin;
+    
+    const maxObj = data.reduce(function(max, obj) {
+    	// https://stackoverflow.com/a/35690350/2307994
+		return obj.avg_base > max.avg_base? obj : max;
+	});
+	
+	const svg = d3.select('svg');
+	const chart = svg.append('g')
+    .attr('transform', `translate(${margin}, ${margin})`);
+    
+    // Draw Y scale
+    const yScale = d3.scaleLinear()
+    .range([height, 0])
+    .domain([0, maxObj.avg_base]);
+    
+    chart.append('g')
+    	.call(d3.axisLeft(yScale));
+    
+    // Draw X scale
+    const xScale = d3.scaleBand()
+	    .range([0, width])
+	    .domain(data.map((s) => s.COL_DIV_CODE))
+	    .padding(0.2);
+
+	chart.append('g')
+	    .attr('transform', `translate(0, ${height})`)
+	    .call(d3.axisBottom(xScale));
+	    
+	// Draw gridlines - horizontal
+	chart.append('g')
+	    .attr('class', 'grid')
+	    .call(d3.axisLeft()
+	        .scale(yScale)
+	        .tickSize(-width, 0, 0)
+	        .tickFormat(''))
+	
+	// Draw bars
+	chart.selectAll()
+	    .data(data)
+	    .enter()
+	    .append('rect')
+	    .attr('x', (s) => xScale(s.COL_DIV_CODE))
+	    .attr('y', (s) => yScale(s.avg_base))
+	    .attr('height', (s) => height - yScale(s.avg_base))
+	    .attr('width', xScale.bandwidth());
+	    
+	// Axis labels
+	svg.append('text')
+	    .attr('x', -(height / 2) - margin)
+	    .attr('y', margin / 2.4)
+	    .attr('transform', 'rotate(-90)')
+	    .attr('text-anchor', 'middle')
+	    .text('Base ($)');
+
+	svg.append('text')
+	    .attr('x', width / 2 + margin)
+	    .attr('y', height + 120)
+	    .attr('text-anchor', 'middle')
+	    .text('X Label');
+}
+
 
 function renderMoney(data, type, row) {
 	if(type === "sort" || type === "type" || data == "") {
@@ -224,84 +289,10 @@ function formatMoney(n, c, d, t) {
   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 
-function groupByCollege() {
-	const sample2 = [
-		{
-			BASE: 44036,
-			COL_DIV_CODE: "Facilities Management",
-			EMPT_STATE_DATE: "20031017",
-			FIRST_LAST_INITIALS: "TB",
-			JOB_TITLE: "General Maintenance Wrkr Lead",
-			LONG_DESC: "Building Services",
-			TENURE_DEC_YR_MO: "",
-			YTD: 16357.55
-		},
-		{
-			BASE: 48399,
-			COL_DIV_CODE: "Undergraduate Education",
-			EMPT_STATE_DATE: "20110613",
-			FIRST_LAST_INITIALS: "TN",
-			JOB_TITLE: "MSUAASF Range C",
-			LONG_DESC: "Center for Academic Success",
-			TENURE_DEC_YR_MO: "",
-			YTD: 19113.9
-		},
-		{
-			BASE: 69381,
-			COL_DIV_CODE: "Facilities Management",
-			EMPT_STATE_DATE: "20160815",
-			FIRST_LAST_INITIALS: "MK",
-			JOB_TITLE: "State University Faculty",
-			LONG_DESC: "Biological Sciences",
-			TENURE_DEC_YR_MO: "202204",
-			YTD: 23954.94
-		},
-		{
-			BASE: 68471,
-			COL_DIV_CODE: "Facilities Management",
-			EMPT_STATE_DATE: "19970903",
-			FIRST_LAST_INITIALS: "JC",
-			JOB_TITLE: "MSUAASF Range C",
-			LONG_DESC: "Business, College of",
-			TENURE_DEC_YR_MO: "",
-			YTD: 25899.06
-		},
-		{
-			BASE: 74490,
-			COL_DIV_CODE: "Facilities Management",
-			EMPT_STATE_DATE: "20140818",
-			FIRST_LAST_INITIALS: "AD",
-			JOB_TITLE: "State University Faculty",
-			LONG_DESC: "Physics & Astronomy",
-			TENURE_DEC_YR_MO: "201904",
-			YTD: 17763
-		},
-		{
-			BASE: 48438,
-			COL_DIV_CODE: "Undergraduate Education",
-			EMPT_STATE_DATE: "20140609",
-			FIRST_LAST_INITIALS: "KS",
-			JOB_TITLE: "MSUAASF Range B",
-			LONG_DESC: "Center for English Language Programs",
-			TENURE_DEC_YR_MO: "",
-			YTD: 4098.59
-		},
-		{
-			BASE: 52367,
-			COL_DIV_CODE: "Undergraduate Education",
-			EMPT_STATE_DATE: "20110221",
-			FIRST_LAST_INITIALS: "TM",
-			JOB_TITLE: "Building Services Forman",
-			LONG_DESC: "Building Services",
-			TENURE_DEC_YR_MO: "",
-			YTD: 18953.44
-		}
-	];
-
+function groupByCollege(data) {
 	let averages = {};
-	
-	for (var i = 0, len = sample2.length; i < len; i++) {
-		let element = sample2[i];
+	for (var i = 0, len = data.length; i < len; i++) {
+		let element = data[i];
 		
 		if (averages[element.COL_DIV_CODE] == undefined) {
 			averages[element.COL_DIV_CODE] = {};
@@ -313,7 +304,16 @@ function groupByCollege() {
 		}
 		averages[element.COL_DIV_CODE]["average"] = averages[element.COL_DIV_CODE]["sum"] / averages[element.COL_DIV_CODE]["count"];
 	};
+	// console.log("[groupByCollege]: ", averages);
 	
-	console.log(averages);
-
+	let returnAverages = [];
+	for(var college in averages) {
+		let collegeItem = {};
+		collegeItem["COL_DIV_CODE"] = college;
+		collegeItem["avg_base"] = averages[college]["average"];
+		returnAverages.push(collegeItem);
+	}
+	console.log(returnAverages);
+	
+	return returnAverages;
 }
