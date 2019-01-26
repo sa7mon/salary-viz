@@ -234,7 +234,12 @@ function graphAverages(data) {
 
 	chart.append('g')
 	    .attr('transform', `translate(0, ${height})`)
-	    .call(d3.axisBottom(xScale));
+	    .call(d3.axisBottom(xScale))
+	    .selectAll("text")
+		    .style("text-anchor", "end")
+	        .attr("dx", "-.8em")
+	        .attr("dy", ".15em")
+	        .attr("transform", "rotate(-45)");
 	    
 	// Draw gridlines - horizontal
 	chart.append('g')
@@ -262,11 +267,11 @@ function graphAverages(data) {
 	    .attr('text-anchor', 'middle')
 	    .text('Base ($)');
 
-	svg.append('text')
-	    .attr('x', width / 2 + margin)
-	    .attr('y', height + 120)
-	    .attr('text-anchor', 'middle')
-	    .text('X Label');
+	// svg.append('text')
+	//     .attr('x', width / 2 + margin)
+	//     .attr('y', height + 120)
+	//     .attr('text-anchor', 'middle')
+	//     .text('X Label');
 }
 
 
