@@ -160,18 +160,20 @@ function graph2(data) {
 	    .domain([maxObj.BASE, 0]);
 
 	chart.append('g')
-	    .attr('transform', `translate(0, ${height})`)
+	    .attr('transform', `translate(0, 0)`)
 	    .call(d3.axisTop(xScale));
     
     // Draw X scale
- //   const xScale = d3.scaleBand()
-	//     .range([0, width])
-	//     .domain(graphSample.map((s) => s.COL_DIV_CODE))
-	//     .padding(0.2);
+    const yScale = d3.scaleBand()
+	    .range([0, width])
+	    .domain(graphSample.map((s) => s.COL_DIV_CODE))
+	    .padding(0.2);
 
-	// chart.append('g')
-	//     .attr('transform', `translate(0, ${height})`)
-	//     .call(d3.axisBottom(xScale));
+	chart.append('g')
+	    .attr('transform', `translate(0, 0)`)
+	    .call(d3.axisLeft(yScale));
+	
+	
 	    
 	// // Draw gridlines - horizontal
 	// chart.append('g')
