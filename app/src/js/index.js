@@ -148,54 +148,62 @@ function graph2(data) {
     .attr('transform', `translate(${margin}, ${margin})`);
     
     // Draw Y scale
-    const yScale = d3.scaleLinear()
-    .range([height, 0])
-    .domain([0, maxObj.BASE]);
+    // const yScale = d3.scaleLinear()
+    // .range([height, 0])
+    // .domain([0, maxObj.BASE]);
     
-    chart.append('g')
-    	.call(d3.axisLeft(yScale));
-    
-    // Draw X scale
-    const xScale = d3.scaleBand()
-	    .range([0, width])
-	    .domain(graphSample.map((s) => s.COL_DIV_CODE))
-	    .padding(0.2);
+    // chart.append('g')
+    // 	.call(d3.axisLeft(yScale));
+    	
+      const xScale = d3.scaleLinear()
+	    .range([height, 0])
+	    .domain([maxObj.BASE, 0]);
 
 	chart.append('g')
 	    .attr('transform', `translate(0, ${height})`)
-	    .call(d3.axisBottom(xScale));
-	    
-	// Draw gridlines - horizontal
-	chart.append('g')
-	    .attr('class', 'grid')
-	    .call(d3.axisLeft()
-	        .scale(yScale)
-	        .tickSize(-width, 0, 0)
-	        .tickFormat(''))
-	
-	// Draw bars
-	chart.selectAll()
-	    .data(graphSample)
-	    .enter()
-	    .append('rect')
-	    .attr('x', (s) => xScale(s.COL_DIV_CODE))
-	    .attr('y', (s) => yScale(s.BASE))
-	    .attr('height', (s) => height - yScale(s.BASE))
-	    .attr('width', xScale.bandwidth());
-	    
-	// Axis labels
-	svg.append('text')
-	    .attr('x', -(height / 2) - margin)
-	    .attr('y', margin / 2.4)
-	    .attr('transform', 'rotate(-90)')
-	    .attr('text-anchor', 'middle')
-	    .text('Base ($)');
+	    .call(d3.axisTop(xScale));
+    
+    // Draw X scale
+ //   const xScale = d3.scaleBand()
+	//     .range([0, width])
+	//     .domain(graphSample.map((s) => s.COL_DIV_CODE))
+	//     .padding(0.2);
 
-	svg.append('text')
-	    .attr('x', width / 2 + margin)
-	    .attr('y', height + 120)
-	    .attr('text-anchor', 'middle')
-	    .text('X Label');
+	// chart.append('g')
+	//     .attr('transform', `translate(0, ${height})`)
+	//     .call(d3.axisBottom(xScale));
+	    
+	// // Draw gridlines - horizontal
+	// chart.append('g')
+	//     .attr('class', 'grid')
+	//     .call(d3.axisLeft()
+	//         .scale(yScale)
+	//         .tickSize(-width, 0, 0)
+	//         .tickFormat(''))
+	
+	// // Draw bars
+	// chart.selectAll()
+	//     .data(graphSample)
+	//     .enter()
+	//     .append('rect')
+	//     .attr('x', (s) => xScale(s.COL_DIV_CODE))
+	//     .attr('y', (s) => yScale(s.BASE))
+	//     .attr('height', (s) => height - yScale(s.BASE))
+	//     .attr('width', xScale.bandwidth());
+	    
+	// // Axis labels
+	// svg.append('text')
+	//     .attr('x', -(height / 2) - margin)
+	//     .attr('y', margin / 2.4)
+	//     .attr('transform', 'rotate(-90)')
+	//     .attr('text-anchor', 'middle')
+	//     .text('Base ($)');
+
+	// svg.append('text')
+	//     .attr('x', width / 2 + margin)
+	//     .attr('y', height + 120)
+	//     .attr('text-anchor', 'middle')
+	//     .text('X Label');
 	    
 
 }
@@ -206,7 +214,7 @@ function graphAverages(data) {
 	*/
 	
 	const margin = 80;
-    const width = 1000 - 2 * margin;
+    const width = 1200 - 2 * margin;
     const height = 600 - 2 * margin;
     
     const maxObj = data.reduce(function(max, obj) {
@@ -239,7 +247,7 @@ function graphAverages(data) {
 		    .style("text-anchor", "end")
 	        .attr("dx", "-.8em")
 	        .attr("dy", ".15em")
-	        .attr("transform", "rotate(-45)");
+	        .attr("transform", "rotate(-35)");
 	    
 	// Draw gridlines - horizontal
 	chart.append('g')
@@ -254,6 +262,7 @@ function graphAverages(data) {
 	    .data(data)
 	    .enter()
 	    .append('rect')
+	    .attr('style', 'fill: steelblue')
 	    .attr('x', (s) => xScale(s.COL_DIV_CODE))
 	    .attr('y', (s) => yScale(s.avg_base))
 	    .attr('height', (s) => height - yScale(s.avg_base))

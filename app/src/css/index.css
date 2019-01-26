@@ -44,7 +44,8 @@ svg {
 
 
 body {
-  font-size: .875rem;
+  /*font-size: .875rem;*/
+  font-size: 14px;
 }
 
 /*
