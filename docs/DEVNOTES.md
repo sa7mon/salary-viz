@@ -37,4 +37,5 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Decided this looks pretty terrible and is really hard to read
 * Took some time to flip the chart axes. Referred to [this example](http://bl.ocks.org/kiranml1/6872226)
 * Created a function to fix college names with the ", College of" suffix to ease readability
-* Came across [this example](https://beta.observablehq.com/@mbostock/d3-sortable-bar-chart) of a sortable bar chart but observale is really confusing so I went off [this one](https://stackoverflow.com/a/46208867/2307994) and it's fiddle
+* Came across [this example](https://beta.observablehq.com/@mbostock/d3-sortable-bar-chart) of a sortable bar chart but observalehq is really confusing so I went off [this one](https://stackoverflow.com/a/46208867/2307994) and it's fiddle
+* Was able to get the bars to sort pretty easily, but had trouble with the labels.
