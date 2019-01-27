@@ -168,12 +168,12 @@ function graph2(data) {
     // Draw Y axis
     const yScale = d3.scaleBand()
 	    .range([0, height])
-	    .domain(data.map((s) => cleanCollegeName(s.COL_DIV_CODE)))
+	    .domain(data.map((s) => s.COL_DIV_CODE))
 	    .padding(0.2);
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
-	    .call(d3.axisLeft(yScale));
+	    .call(d3.axisLeft(yScale).tickFormat(function(d) {return cleanCollegeName(d); }));
 	
 	// Draw gridlines - horizontal
 	chart.append('g')
@@ -181,7 +181,7 @@ function graph2(data) {
 	    .call(d3.axisTop()
 	        .scale(xScale)
 	        .tickSize(-height, 0, 0)
-	        .tickFormat(''))
+	        .tickFormat(''));
 	
 	// // Draw bars
 	chart.selectAll()
@@ -286,7 +286,6 @@ function graphAverages(data) {
 	//     .text('X Label');
 }
 
-
 function renderMoney(data, type, row) {
 	if(type === "sort" || type === "type" || data == "") {
 		return data;
@@ -320,7 +319,7 @@ function groupByCollege(data) {
 			averages[element.COL_DIV_CODE]["count"] += 1;
 		}
 		averages[element.COL_DIV_CODE]["average"] = averages[element.COL_DIV_CODE]["sum"] / averages[element.COL_DIV_CODE]["count"];
-	};
+	}
 	// console.log("[groupByCollege]: ", averages);
 	
 	let returnAverages = [];
