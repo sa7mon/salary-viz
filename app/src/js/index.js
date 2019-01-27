@@ -173,9 +173,13 @@ function graph2(data) {
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
+	    .attr('class', 'y-axis')
 	    .call(d3.axisLeft(yScale).tickFormat(function(d) {return cleanCollegeName(d); }));
+	    
+	d3.selectAll(".y-axis .tick text")
+		.attr("class", "bar-label"); // Add a class to the bar labels 
 	
-	// Draw gridlines - horizontal
+	// Draw gridlines - vertical
 	chart.append('g')
 	    .attr('class', 'grid')
 	    .call(d3.axisTop()
@@ -188,6 +192,7 @@ function graph2(data) {
 	    .data(data)
 	    .enter()
 	    .append('rect')
+	    .attr("class","bar")
 	    .attr('style', 'fill: steelblue')
 	    .attr('y', (s) => yScale(s.COL_DIV_CODE))
 	    .attr('x', 0)
@@ -208,6 +213,45 @@ function graph2(data) {
 	//     .attr('y', height + 120)
 	//     .attr('text-anchor', 'middle')
 	//     .text('X Label');
+	
+	d3.select("#byValue").on("click", function() {
+		data.sort(function(a,b) {
+			return d3.descending(a.avg_base, b.avg_base);
+		});
+		
+		yScale.domain(data.map(function(d) {
+			return d.avg_base;
+		}));
+		
+		console.log(data);
+		
+		svg.selectAll(".bar")
+			.transition()
+			.duration(500)
+			.attr("y", function(d, i) {
+				console.log("bar: ", d.avg_base, " ", yScale(d.avg_base));
+				return yScale(d.avg_base);
+			});
+			
+		svg.selectAll(".bar-label")
+		    .transition()
+		    .duration(500)
+		    .attr("y", function(d) {
+		    	var obj = findObjectByCollegeName(d, data);
+		    	console.log("label: ", obj.avg_base, " ", yScale(obj.avg_base));
+		    	return yScale(obj.avg_base) + yScale.bandwidth() / 2 - 8;
+		    });
+		    // .attr("transform", function(d, i) {
+	    	// 	var obj = findObjectByCollegeName(d, data);
+		    // 	return "translate( 0," + (yScale(obj.avg_base) + yScale.bandwidth() / 2 - 8) + ")";
+		    // })
+		    // .attr("transform", function(e, j) {
+		    // 	console.log(yScale(e.COL_DIV_CODE));
+		    //   return "translate(0," + yScale(e.COL_DIV_CODE) + ")";
+		    // })
+		    
+		
+	});
 	    
 
 }
@@ -321,18 +365,25 @@ function groupByCollege(data) {
 		}
 		averages[element.COL_DIV_CODE]["average"] = averages[element.COL_DIV_CODE]["sum"] / averages[element.COL_DIV_CODE]["count"];
 	}
-	// console.log("[groupByCollege]: ", averages);
 	
 	let returnAverages = [];
 	for(var college in averages) {
 		let collegeItem = {};
-		collegeItem["COL_DIV_CODE"] = college;
+		collegeItem["COL_DIV_CODE"] = cleanCollegeName(college);
 		collegeItem["avg_base"] = averages[college]["average"];
 		returnAverages.push(collegeItem);
 	}
 	console.log(returnAverages);
 	
 	return returnAverages;
+}
+
+function findObjectByCollegeName(name, data) {
+	for (var i=0;i<data.length;i++) {
+		if (data[i].COL_DIV_CODE == name) {
+			return data[i]
+		}
+	}
 }
 
 function cleanCollegeName(name) {
