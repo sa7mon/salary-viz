@@ -134,18 +134,19 @@ function graph2(data) {
 	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
 	*/
 	
-	const margin = 80;
-    const width = 1000 - 2 * margin;
-    const height = 600 - 2 * margin;
+	const heightMargin = 120;
+	const widthMargin = 300;
+    const width = 1200 - 2 * widthMargin;
+    const height = 1000 - 2 * heightMargin;
     
-    const maxObj = graphSample.reduce(function(max, obj) {
+    const maxObj = data.reduce(function(max, obj) {
     	// https://stackoverflow.com/a/35690350/2307994
-		return obj.BASE > max.BASE? obj : max;
+		return obj.avg_base > max.avg_base? obj : max;
 	});
 	
 	const svg = d3.select('svg');
 	const chart = svg.append('g')
-    .attr('transform', `translate(${margin}, ${margin})`);
+    .attr('transform', `translate(${widthMargin}, ${heightMargin})`);
     
     // Draw Y scale
     // const yScale = d3.scaleLinear()
@@ -154,44 +155,44 @@ function graph2(data) {
     
     // chart.append('g')
     // 	.call(d3.axisLeft(yScale));
-    	
-      const xScale = d3.scaleLinear()
-	    .range([height, 0])
-	    .domain([maxObj.BASE, 0]);
+    
+    // Draw X axis
+	const xScale = d3.scaleLinear()
+	    .range([width, 0])
+	    .domain([maxObj.avg_base, 0]);
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
 	    .call(d3.axisTop(xScale));
     
-    // Draw X scale
+    // Draw Y axis
     const yScale = d3.scaleBand()
-	    .range([0, width])
-	    .domain(graphSample.map((s) => s.COL_DIV_CODE))
+	    .range([0, height])
+	    .domain(data.map((s) => s.COL_DIV_CODE))
 	    .padding(0.2);
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
 	    .call(d3.axisLeft(yScale));
 	
-	
-	    
-	// // Draw gridlines - horizontal
-	// chart.append('g')
-	//     .attr('class', 'grid')
-	//     .call(d3.axisLeft()
-	//         .scale(yScale)
-	//         .tickSize(-width, 0, 0)
-	//         .tickFormat(''))
+	// Draw gridlines - horizontal
+	chart.append('g')
+	    .attr('class', 'grid')
+	    .call(d3.axisTop()
+	        .scale(xScale)
+	        .tickSize(-height, 0, 0)
+	        .tickFormat(''))
 	
 	// // Draw bars
-	// chart.selectAll()
-	//     .data(graphSample)
-	//     .enter()
-	//     .append('rect')
-	//     .attr('x', (s) => xScale(s.COL_DIV_CODE))
-	//     .attr('y', (s) => yScale(s.BASE))
-	//     .attr('height', (s) => height - yScale(s.BASE))
-	//     .attr('width', xScale.bandwidth());
+	chart.selectAll()
+	    .data(data)
+	    .enter()
+	    .append('rect')
+	    .attr('y', (s) => yScale(s.COL_DIV_CODE))
+	    .attr('x', 0)
+	    // .attr('width', (s) => width - xScale(s.BASE))
+	    .attr('width', (s) => xScale(s.avg_base))
+	    .attr('height', yScale.bandwidth());
 	    
 	// // Axis labels
 	// svg.append('text')
