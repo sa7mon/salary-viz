@@ -168,7 +168,7 @@ function graph2(data) {
     // Draw Y axis
     const yScale = d3.scaleBand()
 	    .range([0, height])
-	    .domain(data.map((s) => s.COL_DIV_CODE))
+	    .domain(data.map((s) => cleanCollegeName(s.COL_DIV_CODE)))
 	    .padding(0.2);
 
 	chart.append('g')
@@ -333,4 +333,18 @@ function groupByCollege(data) {
 	console.log(returnAverages);
 	
 	return returnAverages;
+}
+
+function cleanCollegeName(name) {
+	// Take in college name like: 'Education, College of' 
+	// and return 'College of Education'
+	
+	let matches = name.match(/,.+ of/g);
+	
+	if (matches === null) {
+		return name;
+	}
+	
+	return name.substr(name.lastIndexOf(",")+1, name.length).trim() + " " + // College of
+			name.substr(0, name.lastIndexOf(","));							// Education (etc.)
 }

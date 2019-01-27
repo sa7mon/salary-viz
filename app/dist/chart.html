@@ -106,8 +106,16 @@
                 ];
 
                 var groupedData = groupByCollege(data);
+                
+                // DEBUG
+                for (var i = 0; i < groupedData.length; i++) {
+                    cleanCollegeName(data[i].COL_DIV_CODE);  
+                }
+                     
+                
                 graph2(groupedData);
                 // graphAverages(groupedData);
+                
             });
         });
     </script>
