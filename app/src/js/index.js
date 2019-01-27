@@ -188,6 +188,7 @@ function graph2(data) {
 	    .data(data)
 	    .enter()
 	    .append('rect')
+	    .attr('style', 'fill: steelblue')
 	    .attr('y', (s) => yScale(s.COL_DIV_CODE))
 	    .attr('x', 0)
 	    // .attr('width', (s) => width - xScale(s.BASE))
