@@ -45,10 +45,29 @@ function createTable(csvData) {
 		data: csvData,
 		"columns": [
 			{ "data": "FIRST_LAST_INITIALS", "title": "Initials"},	
-			{ "data": "LONG_DESC", "title": "Description"},
-			{ "data": "COL_DIV_CODE", "title": "Department"},
+			{ 
+				"data": "LONG_DESC", 
+				"title": "Description",
+				"render": function(data, type, row) {
+					if (type === "sort" || type === "type" || data == "") {
+						return data;
+					}
+					return cleanCollegeName(data)	
+				}
+			},
+			{ 
+				"data": "COL_DIV_CODE", 
+				"title": "Department",
+				"render": function(data, type, row) {
+					if (type === "sort" || type === "type" || data == "") {
+						return data;
+					}
+					return cleanCollegeName(data)
+				}
+			},
 			{ "data": "JOB_TITLE", "title": "Job Title"},
-			{ "data": "TENURE_DEC_YR_MO", 
+			{ 
+				"data": "TENURE_DEC_YR_MO", 
 				"title": "Tenure Date",
 				"render": function(data, type, row){
                 	if(type === "sort" || type === "type" || data == ""){
@@ -57,7 +76,8 @@ function createTable(csvData) {
                 	return moment(data, "YYYYMM").format("MMMM YYYY")
             	}			
 			},
-			{ "data": "EMPT_STATE_DATE", 
+			{ 
+				"data": "EMPT_STATE_DATE", 
 				"title": "Start Date",
 				"render": function(data, type, row){
                 	if(type === "sort" || type === "type" || data == ""){
@@ -66,11 +86,13 @@ function createTable(csvData) {
                 	return moment(data, "YYYYMMDD").format("MMM DD, YYYY")
 				}
 			},
-			{ "data": "BASE", 
+			{ 
+				"data": "BASE", 
 				"title": "Base",
 				"render": renderMoney
 			},
-			{ "data": "YTD",
+			{ 
+				"data": "YTD",
 				"title": "YTD",
 				"render": renderMoney
 			},
