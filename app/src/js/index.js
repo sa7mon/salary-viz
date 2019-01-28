@@ -5,7 +5,7 @@
 * 	License: MIT
 */
 
-/* global d3, localStorage, $ */ // <- Make linter happy
+/* global d3, localStorage, $, moment */ // <- Make linter happy
 
 
 var csvData; 
@@ -142,9 +142,9 @@ function graph2(data) {
 	*/
 	
 	const heightMargin = 30;
-	const widthMargin = 250;
+	const widthMargin = 300;
     const width = 1200 - 2 * widthMargin;
-    const height = 1600 - 2 * heightMargin;
+    const height = 1000 - 2 * heightMargin;
     
     const maxObj = data.reduce(function(max, obj) {
     	// https://stackoverflow.com/a/35690350/2307994
@@ -162,6 +162,7 @@ function graph2(data) {
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
+	    .attr('class', 'x-axis')
 	    .call(d3.axisTop(xScale));
     
     // Draw Y axis
@@ -239,8 +240,28 @@ function graph2(data) {
 				.duration(500)
 			.call(axisLeft);
 	});
-	    
-
+	
+	d3.select("#byCollege").on("click", function() {
+		data.sort(function(a,b) {
+			return d3.descending(a.COL_DIV_CODE, b.COL_DIV_CODE);
+		});	
+		
+		yScale.domain(data.map(function(d) {
+			return d.COL_DIV_CODE;
+		}));
+		
+		svg.selectAll(".bar")
+			.transition()
+			.duration(500)
+			.attr("y", function(d, i) {
+				return yScale(d.COL_DIV_CODE);
+			});
+			
+		chart.select('g.y-axis')
+			.transition()
+				.duration(500)
+			.call(axisLeft);
+	});
 }
 
 function graphAverages(data) {
