@@ -134,8 +134,8 @@ function graph2(data) {
 	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
 	*/
 	
-	const heightMargin = 120;
-	const widthMargin = 300;
+	const heightMargin = 30;
+	const widthMargin = 250;
     const width = 1200 - 2 * widthMargin;
     const height = 1600 - 2 * heightMargin;
     
@@ -144,7 +144,7 @@ function graph2(data) {
 		return obj.avg_base > max.avg_base? obj : max;
 	});
 	
-	const svg = d3.select('svg');
+	const svg = d3.select('svg#bar-chart');
 	const chart = svg.append('g')
     .attr('transform', `translate(${widthMargin}, ${heightMargin})`);
     
