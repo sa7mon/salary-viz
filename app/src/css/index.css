@@ -1,3 +1,7 @@
+/*
+*
+* D3 charts
+*/
 .chart div {
   font: 10px sans-serif;
   background-color: steelblue;
@@ -7,14 +11,41 @@
   color: white;
 }
 
-body {
-  font-size: .875rem;
+/** IcoMoon **/
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
 }
 
-.feather {
-  width: 16px;
-  height: 16px;
-  vertical-align: text-bottom;
+/* ==========================================
+Single-colored icons can be modified like so:
+.icon-name {
+  font-size: 32px;
+  color: red;
+}
+========================================== */
+
+input.table-search.width-0{
+  width: 64px;
+}
+
+input.table-search.width-1 {
+  width: 97px;
+}
+
+svg {
+  width: 100vw;
+  height: 100vh;
+}
+
+
+body {
+  /*font-size: .875rem;*/
+  font-size: 14px;
 }
 
 /*
@@ -38,6 +69,7 @@ body {
   padding-top: .5rem;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  font-size: 19px;
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {

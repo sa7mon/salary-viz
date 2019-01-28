@@ -16,3 +16,33 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Feather Icons used JS to replace icons and caused a flash when loading the page. Didn't like. Moved to using IcoMoon generated SVG's which load instantly now.
 * Updating the same template on multiple pages is now starting to get annoying. Should probably look at using Jeykyll / Hugo for static site generation.
 * Before I'm done, I'd like to reduce the number of CDN calls I'm making for libs. Either download them locally or use npm to pull in and then gulp to concat + minify
+
+1/23/19
+* Put off moving to a static site generator for now
+* Implemented Gulp and moved everyting to a src-dist organization. Made rules to concat, babel, and minify my app JS. Still need to get the libs downloaded (maybe with npm) 
+* Created a package.json file to keep track of the dev dependencies
+* Switched from generating the table in HTML and pointing DataTables at it to passing DataTables the data and having it generate the table. This way it will have greater control over how to format and render the data.
+
+1/24/19
+* Just got the chart page usable again after all the library changes
+
+1/25/19
+* Got a simple PoC vertical bar chart working after mostly following [this tutorial]. Also referred to [this example](http://bl.ocks.org/d3noob/8952219)
+
+1/26/19
+* Decided we're going to need to group the data a bit to show it in one concise chart. The best fit seems to be by college (also the examples Dr. V was showing in class did it this way)
+* Researched the most efficient for loop style for ES6 Javascript. Turns out just plain `for (var i =0;)...` loops are the best
+* Got a grouping method to work and tested it on a small sample array of data
+* Was able to get the grouped data to plot on the chart, but the labels are really long. We're either going to need to display them vertically or slanted.
+* Decided this looks pretty terrible and is really hard to read
+* Took some time to flip the chart axes. Referred to [this example](http://bl.ocks.org/kiranml1/6872226)
+* Created a function to fix college names with the ", College of" suffix to ease readability
+* Came across [this example](https://beta.observablehq.com/@mbostock/d3-sortable-bar-chart) of a sortable bar chart but observalehq is really confusing so I went off [this one](https://stackoverflow.com/a/46208867/2307994) and it's fiddle
+* Was able to get the bars to sort pretty easily, but had trouble with the labels.
+* Really struggled with getting the labels to sort with the bars, so I took some time to write up a simplified version to post on bl.ocks.org and then [posted a question](https://stackoverflow.com/questions/54389499/how-to-move-tick-labels-in-horizontal-bar-chart) on StackOverflow. Someone responded in like 30 minutes with a perfect solution. 
+* Integrated the changes from the SO answer
+* The chart now sorts perfectly based on value, but gets cut off at bottom and isn't integrated into the template.
+* Decided it's time to call Sprint 1
+
+
+

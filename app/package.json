@@ -1,0 +1,32 @@
+{
+  "name": "mnsu-salary-explorer",
+  "version": "0.1.0",
+  "description": "IT680 - Spring 2019",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "bootstrap": "^4.2.1",
+    "datatables.net-bs4": "^1.10.19",
+    "datatables.net-fixedheader-bs4": "^3.1.5",
+    "datatables.net-responsive-bs4": "^2.2.3",
+    "jquery-csv": "^0.8.9",
+    "moment": "^2.24.0",
+    "popper.js": "^1.14.6"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "gulp-babel": "^7.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp": "^4.0.0",
+    "gulp-uglifycss": "^1.1.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-uglify": "^3.0.1",
+    "pump": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dan Salmon",
+  "license": "MIT"
+}
