@@ -212,6 +212,21 @@ function graph2(data) {
 	    // .attr('width', (s) => width - xScale(s.BASE))
 	    .attr('width', (s) => xScale(s.avg_base))
 	    .attr('height', yScale.bandwidth());
+	    
+	svg.selectAll(".text")  		
+	  .data(data)
+	  .enter()
+	  .append("text")
+	  .attr("class","label")
+	  .attr("x", (function(d) { 
+	  	let barWidth = xScale(d.avg_base) - widthMargin
+	  	return widthMargin + barWidth; 
+	  	
+	  }))
+	  //.attr("y", function(d) { return yScale(d.COL_DIV_CODE) + 36; })
+	  .attr("y", function(d) { return yScale(d.COL_DIV_CODE) + yScale.bandwidth() + 12; })
+	  .attr("dy", ".75em")
+	  .text(function(d) { return "$" + formatMoney(d.avg_base,2, ".", ","); });   	  
 	
 	d3.selectAll(".bar")
 	.on("mouseover", function() {
