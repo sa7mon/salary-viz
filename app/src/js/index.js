@@ -5,7 +5,8 @@
 * 	License: MIT
 */
 
-/* global d3 */
+/* global d3, localStorage, $ */ // <- Make linter happy
+
 
 var csvData; 
 
@@ -25,26 +26,32 @@ const graphSample = [
 ];
 
 function loadData(handleData) {
-	$.ajax({
-        type: "GET",
-        url: "data/data_sampled.csv",
-        dataType: "text",
-        success: function(data) {
-			csvData = $.csv.toObjects(data);
-			for (var i = csvData.length - 1; i >= 0; i--) {
-				if (csvData[i]["BASE"] !== undefined) {
-					csvData[i]["BASE"] = Number(csvData[i]["BASE"].replace("$", "").replace(",",""));
+	if (localStorage.getItem("csvData") !== null) {
+		console.log("Using csvdata from LocalStorage...");
+		handleData(JSON.parse(localStorage.getItem("csvData")));
+	} else {
+		$.ajax({
+	        type: "GET",
+	        url: "data/data_sampled.csv",
+	        dataType: "text",
+	        success: function(data) {
+				csvData = $.csv.toObjects(data);
+				for (var i = csvData.length - 1; i >= 0; i--) {
+					if (csvData[i]["BASE"] !== undefined) {
+						csvData[i]["BASE"] = Number(csvData[i]["BASE"].replace("$", "").replace(",",""));
+					}
+					if (csvData[i]["YTD"] !== undefined) {
+						csvData[i]["YTD"] = Number(csvData[i]["YTD"].replace("$", "").replace(",",""));
+					}
 				}
-				if (csvData[i]["YTD"] !== undefined) {
-					csvData[i]["YTD"] = Number(csvData[i]["YTD"].replace("$", "").replace(",",""));
-				}
-			}
-			handleData(csvData);
-        },
-        error: function(data) {
-        	console.log("[loadData] Error loading data: ", data);
-        }
-	 });
+				localStorage.setItem("csvData", JSON.stringify(csvData));
+				handleData(csvData);
+	        },
+	        error: function(data) {
+	        	console.log("[loadData] Error loading data: ", data);
+	        }
+		});
+	}
 }
 
 function createTable(csvData) {
@@ -228,13 +235,10 @@ function graph2(data) {
 			return d.COL_DIV_CODE;
 		}));
 		
-		console.log(data);
-		
 		svg.selectAll(".bar")
 			.transition()
 			.duration(500)
 			.attr("y", function(d, i) {
-				console.log("bar: ", d.avg_base, " ", yScale(d.avg_base));
 				return yScale(d.COL_DIV_CODE);
 			});
 			
