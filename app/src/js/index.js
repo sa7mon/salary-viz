@@ -10,21 +10,6 @@
 
 var csvData; 
 
-const graphSample = [
-	{
-		COL_DIV_CODE: 'Academic Affairs',
-		BASE: 67778.9,
-	},
-	{
-		COL_DIV_CODE: 'Finance and Administration',
-		BASE: 75000.1,
-	},
-	{
-		COL_DIV_CODE: 'Arts and Humanities, College of',
-		BASE: 68109.0,
-	},
-];
-
 function loadData(handleData) {
 	if (localStorage.getItem("csvData") !== null) {
 		console.log("Using csvdata from LocalStorage...");
@@ -55,7 +40,6 @@ function loadData(handleData) {
 }
 
 function createTable(csvData) {
-	console.log(csvData);
 	// Initialize DataTable
     var table = $('#salary-table').DataTable( {
 		data: csvData,
@@ -139,16 +123,6 @@ function createTable(csvData) {
             }
         } );
     } );
-}
-
-function graph(data) {
-	d3.select(".chart")
-	.selectAll("div")
-	.data(data)
-		.enter()
-		.append("div")
-		.style("width", function(d) { return d["BASE"] / 100 + "px"; })
-		.text(function(d) { return d["BASE"]; });
 }
 
 function graph2(data) {
