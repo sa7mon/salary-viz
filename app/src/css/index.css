@@ -4,7 +4,7 @@
 */
 .chart div {
   font: 10px sans-serif;
-  background-color: steelblue;
+  background-color: #343a40;
   text-align: right;
   padding: 3px;
   margin: 1px;
@@ -54,6 +54,9 @@ text.bar-label {
   font-size: 14px;
 }
 
+text.label {
+  fill: white;
+}
 
 body {
   /*font-size: .875rem;*/

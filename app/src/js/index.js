@@ -206,7 +206,7 @@ function graph2(data) {
 	    .enter()
 	    .append('rect')
 	    .attr("class","bar")
-	    .attr('style', 'fill: steelblue')
+	    .attr('style', 'fill: #343a40')
 	    .attr('y', (s) => yScale(s.COL_DIV_CODE))
 	    .attr('x', 0)
 	    // .attr('width', (s) => width - xScale(s.BASE))
@@ -219,9 +219,7 @@ function graph2(data) {
 	  .append("text")
 	  .attr("class","label")
 	  .attr("x", (function(d) { 
-	  	let barWidth = xScale(d.avg_base) - widthMargin
 	  	return widthMargin + (xScale(d.avg_base) / 2) - 30; 
-	  	
 	  }))
 	  //.attr("y", function(d) { return yScale(d.COL_DIV_CODE) + 36; })
 	  .attr("y", function(d) { return yScale(d.COL_DIV_CODE) + yScale.bandwidth() + 12; })
@@ -230,10 +228,10 @@ function graph2(data) {
 	
 	d3.selectAll(".bar")
 	.on("mouseover", function() {
-    	d3.select(this).style("fill", "#343a40");
+    	d3.select(this).style("fill", "steelblue");
     })
     .on("mouseout", function() {
-        d3.select(this).style("fill", "steelblue");
+        d3.select(this).style("fill", "#343a40");
     });
 	    
 	// // Axis labels
@@ -292,6 +290,14 @@ function graph2(data) {
 			.attr("y", function(d, i) {
 				return yScale(d.COL_DIV_CODE);
 			});
+		
+		svg.selectAll(".label")
+			.transition()
+			.duration(500)
+			.attr("y", function(d, i) {
+				console.log("moving text");
+				return yScale(d.COL_DIV_CODE) + 35;
+			})
 			
 		chart.select('g.y-axis')
 			.transition()
