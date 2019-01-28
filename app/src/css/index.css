@@ -73,7 +73,7 @@ body {
 }
 
 .sidebar-footer a {
-  text-decoration: none;
+  /*text-decoration: none;*/
   color: rgb(33, 37, 41);
 }
 
@@ -126,6 +126,26 @@ body {
 .sidebar-heading {
   font-size: .75rem;
   text-transform: uppercase;
+}
+
+/*
+*  DataTable page
+*/
+
+.page-item.active .page-link { 
+  background-color: #343a40;
+  border-color: #343a40;
+  outline: none !important; /* remove blue outline after click */
+  box-shadow: none;         /* remove blue outline after click */
+}
+
+ul.pagination li.paginate_button.previous {
+  outline: none !important; /* remove blue outline after click */
+  box-shadow: none;         /* remove blue outline after click */
+}
+
+ul.pagination a {
+  color: black;
 }
 
 /*

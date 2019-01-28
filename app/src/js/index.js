@@ -93,9 +93,24 @@ function createTable(csvData) {
 		],
 		orderCellsTop: true,
 		fixedHeader: true,
-		//responsive: true
+		responsive: true
 	});
 	
+	/*
+	* Responsive resizing listener
+	* https://datatables.net/reference/event/responsive-resize
+	*/
+	table.on( 'responsive-resize', function ( e, datatable, columns ) {
+	    var inputs = $("#salary-table th input.table-search");
+	    for (var i=0; i < inputs.length; i++) {
+	    	if (columns[i] == true) {
+	    		inputs.eq(i).show();
+	    	} else {
+	    		inputs.eq(i).hide();
+	    	}
+	    }
+	});
+		
 	/**
 	 * Add column filtering 
 	 * https://datatables.net/extensions/fixedheader/examples/options/columnFiltering.html
