@@ -54,3 +54,11 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Increased the axis fonts a bit to improve readability 
 * Added the option to sort alphabetically by college name and moved the sort options to a dropdown
 * Added author information to the sidebar footer
+
+1/28/19
+
+* Styled table pagination area to make it black instead of bootstrap blue
+* Made table responsive so it hides columns starting at the right, but the search box still stayed there
+* Created a listener to hide the search box on columns change
+* Created a favicon.ico
+
