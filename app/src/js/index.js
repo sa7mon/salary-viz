@@ -296,7 +296,7 @@ function graph2(data) {
 			.duration(500)
 			.attr("y", function(d, i) {
 				console.log("moving text");
-				return yScale(d.COL_DIV_CODE) + 35;
+				return yScale(d.COL_DIV_CODE) + 37;
 			})
 			
 		chart.select('g.y-axis')

@@ -63,6 +63,9 @@ body {
   font-size: 14px;
 }
 
+g.grid g.tick line {
+  stroke: #bdbdbd;
+}
 /*
  * Sidebar
  */
