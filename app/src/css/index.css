@@ -64,6 +64,19 @@ body {
  * Sidebar
  */
 
+.sidebar-footer {
+  bottom: 0;
+  position: absolute;
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+}
+
+.sidebar-footer a {
+  text-decoration: none;
+  color: rgb(33, 37, 41);
+}
+
 .sidebar {
   position: fixed;
   top: 0;

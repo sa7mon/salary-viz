@@ -144,7 +144,7 @@ function graph2(data) {
 	const heightMargin = 30;
 	const widthMargin = 300;
     const width = 1200 - 2 * widthMargin;
-    const height = 1000 - 2 * heightMargin;
+    const height = 900 - 2 * heightMargin;
     
     const maxObj = data.reduce(function(max, obj) {
     	// https://stackoverflow.com/a/35690350/2307994
@@ -201,6 +201,14 @@ function graph2(data) {
 	    // .attr('width', (s) => width - xScale(s.BASE))
 	    .attr('width', (s) => xScale(s.avg_base))
 	    .attr('height', yScale.bandwidth());
+	
+	d3.selectAll(".bar")
+	.on("mouseover", function() {
+    	d3.select(this).style("fill", "#343a40");
+    })
+    .on("mouseout", function() {
+        d3.select(this).style("fill", "steelblue");
+    });
 	    
 	// // Axis labels
 	// svg.append('text')
@@ -219,33 +227,35 @@ function graph2(data) {
 	
 	// Sort bars by value
 	
-	d3.select("#byValue").on("click", function() {
+	d3.select("#sort-value-asc").on("click", function() {
+		data.sort(function(a,b) {
+			return d3.ascending(a.avg_base, b.avg_base);
+		});
+		changeSort();		
+	});
+	
+	d3.select("#sort-value-desc").on("click", function() {
 		data.sort(function(a,b) {
 			return d3.descending(a.avg_base, b.avg_base);
 		});
-		
-		yScale.domain(data.map(function(d) {
-			return d.COL_DIV_CODE;
-		}));
-		
-		svg.selectAll(".bar")
-			.transition()
-			.duration(500)
-			.attr("y", function(d, i) {
-				return yScale(d.COL_DIV_CODE);
-			});
-			
-		chart.select('g.y-axis')
-			.transition()
-				.duration(500)
-			.call(axisLeft);
+		changeSort();		
 	});
 	
-	d3.select("#byCollege").on("click", function() {
+	d3.select("#sort-college-asc").on("click", function(btn) {
+		data.sort(function(a,b) {
+			return d3.ascending(a.COL_DIV_CODE, b.COL_DIV_CODE);
+		});	
+		changeSort();
+	});
+	
+	d3.select("#sort-college-desc").on("click", function(btn) {
 		data.sort(function(a,b) {
 			return d3.descending(a.COL_DIV_CODE, b.COL_DIV_CODE);
 		});	
-		
+		changeSort();
+	});
+	
+	function changeSort() {
 		yScale.domain(data.map(function(d) {
 			return d.COL_DIV_CODE;
 		}));
@@ -261,7 +271,7 @@ function graph2(data) {
 			.transition()
 				.duration(500)
 			.call(axisLeft);
-	});
+	}
 }
 
 function graphAverages(data) {

@@ -46,6 +46,12 @@
                 </a>
               </li>
             </ul>
+          
+            <div class="sidebar-footer">
+                <a href="https://danthesalmon.com" target="_blank">Dan Salmon</a>
+                <br />
+                License - MIT
+            </div>
           </div>
         </nav>
 
@@ -54,8 +60,21 @@
                 <h1 class="h2">Chart</h1>
             </div>
             
-            <button id="byValue" class="btn">Sort by Value</button>
-            <button id="byCollege" class="btn">Sort by College</button>
+            <!--<button id="byValue" data-sort="value" class="sort-btn btn">Sort by Value</button>-->
+            <!--<button id="byCollege" data-sort="college" class="sort-btn btn">Sort by College</button>-->
+            
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" id="sort-value-asc" href="#">Value - Ascending</a>
+                <a class="dropdown-item" id="sort-value-desc" href="#">Value - Descending</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="sort-college-asc" href="#">College - Ascending</a>
+                <a class="dropdown-item" id="sort-college-desc" href="#">College - Descending</a>
+              </div>
+            </div>
             
         	<div class="chart"></div>
 	        <svg id="bar-chart"></svg>
