@@ -220,7 +220,7 @@ function graph2(data) {
 	  .attr("class","label")
 	  .attr("x", (function(d) { 
 	  	let barWidth = xScale(d.avg_base) - widthMargin
-	  	return widthMargin + barWidth; 
+	  	return widthMargin + (xScale(d.avg_base) / 2) - 30; 
 	  	
 	  }))
 	  //.attr("y", function(d) { return yScale(d.COL_DIV_CODE) + 36; })
