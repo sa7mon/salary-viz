@@ -39,3 +39,10 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Created a function to fix college names with the ", College of" suffix to ease readability
 * Came across [this example](https://beta.observablehq.com/@mbostock/d3-sortable-bar-chart) of a sortable bar chart but observalehq is really confusing so I went off [this one](https://stackoverflow.com/a/46208867/2307994) and it's fiddle
 * Was able to get the bars to sort pretty easily, but had trouble with the labels.
+* Really struggled with getting the labels to sort with the bars, so I took some time to write up a simplified version to post on bl.ocks.org and then [posted a question](https://stackoverflow.com/questions/54389499/how-to-move-tick-labels-in-horizontal-bar-chart) on StackOverflow. Someone responded in like 30 minutes with a perfect solution. 
+* Integrated the changes from the SO answer
+* The chart now sorts perfectly based on value, but gets cut off at bottom and isn't integrated into the template.
+* Decided it's time to call Sprint 1
+
+
+
