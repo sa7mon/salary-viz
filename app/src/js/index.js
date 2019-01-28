@@ -155,14 +155,6 @@ function graph2(data) {
 	const chart = svg.append('g')
     .attr('transform', `translate(${widthMargin}, ${heightMargin})`);
     
-    // Draw Y scale
-    // const yScale = d3.scaleLinear()
-    // .range([height, 0])
-    // .domain([0, maxObj.BASE]);
-    
-    // chart.append('g')
-    // 	.call(d3.axisLeft(yScale));
-    
     // Draw X axis
 	const xScale = d3.scaleLinear()
 	    .range([width, 0])
@@ -196,7 +188,7 @@ function graph2(data) {
 	        .tickSize(-height, 0, 0)
 	        .tickFormat(''));
 	
-	// // Draw bars
+	// Draw bars
 	chart.selectAll()
 	    .data(data)
 	    .enter()
@@ -242,30 +234,10 @@ function graph2(data) {
 				return yScale(d.COL_DIV_CODE);
 			});
 			
-		// svg.selectAll(".bar-label")
-		//     .transition()
-		//     .duration(500)
-		//     .attr("y", function(d) {
-		//     	var obj = findObjectByCollegeName(d, data);
-		//     	console.log("label: ", obj.avg_base, " ", yScale(obj.avg_base));
-		//     	return yScale(obj.COL_DIV_CODE) + yScale.bandwidth() / 2 - 8;
-		//     });
-		
 		chart.select('g.y-axis')
 			.transition()
 				.duration(500)
 			.call(axisLeft);
-		
-		    // .attr("transform", function(d, i) {
-	    	// 	var obj = findObjectByCollegeName(d, data);
-		    // 	return "translate( 0," + (yScale(obj.avg_base) + yScale.bandwidth() / 2 - 8) + ")";
-		    // })
-		    // .attr("transform", function(e, j) {
-		    // 	console.log(yScale(e.COL_DIV_CODE));
-		    //   return "translate(0," + yScale(e.COL_DIV_CODE) + ")";
-		    // })
-		    
-		
 	});
 	    
 
