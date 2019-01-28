@@ -137,7 +137,7 @@ function graph2(data) {
 	const heightMargin = 120;
 	const widthMargin = 300;
     const width = 1200 - 2 * widthMargin;
-    const height = 1000 - 2 * heightMargin;
+    const height = 1600 - 2 * heightMargin;
     
     const maxObj = data.reduce(function(max, obj) {
     	// https://stackoverflow.com/a/35690350/2307994
@@ -170,6 +170,8 @@ function graph2(data) {
 	    .range([0, height])
 	    .domain(data.map((s) => s.COL_DIV_CODE))
 	    .padding(0.2);
+	    
+	var axisLeft = d3.axisLeft(yScale).tickFormat(function(d) {return d;});
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
@@ -214,13 +216,16 @@ function graph2(data) {
 	//     .attr('text-anchor', 'middle')
 	//     .text('X Label');
 	
+	
+	// Sort bars by value
+	
 	d3.select("#byValue").on("click", function() {
 		data.sort(function(a,b) {
 			return d3.descending(a.avg_base, b.avg_base);
 		});
 		
 		yScale.domain(data.map(function(d) {
-			return d.avg_base;
+			return d.COL_DIV_CODE;
 		}));
 		
 		console.log(data);
@@ -230,17 +235,23 @@ function graph2(data) {
 			.duration(500)
 			.attr("y", function(d, i) {
 				console.log("bar: ", d.avg_base, " ", yScale(d.avg_base));
-				return yScale(d.avg_base);
+				return yScale(d.COL_DIV_CODE);
 			});
 			
-		svg.selectAll(".bar-label")
-		    .transition()
-		    .duration(500)
-		    .attr("y", function(d) {
-		    	var obj = findObjectByCollegeName(d, data);
-		    	console.log("label: ", obj.avg_base, " ", yScale(obj.avg_base));
-		    	return yScale(obj.avg_base) + yScale.bandwidth() / 2 - 8;
-		    });
+		// svg.selectAll(".bar-label")
+		//     .transition()
+		//     .duration(500)
+		//     .attr("y", function(d) {
+		//     	var obj = findObjectByCollegeName(d, data);
+		//     	console.log("label: ", obj.avg_base, " ", yScale(obj.avg_base));
+		//     	return yScale(obj.COL_DIV_CODE) + yScale.bandwidth() / 2 - 8;
+		//     });
+		
+		chart.select('g.y-axis')
+			.transition()
+				.duration(500)
+			.call(axisLeft);
+		
 		    // .attr("transform", function(d, i) {
 	    	// 	var obj = findObjectByCollegeName(d, data);
 		    // 	return "translate( 0," + (yScale(obj.avg_base) + yScale.bandwidth() / 2 - 8) + ")";
