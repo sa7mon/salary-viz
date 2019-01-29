@@ -102,6 +102,21 @@ function createTable(csvData) {
 		responsive: true
 	});
 	
+	// var table = $('#salary-table').dataTable().api();
+	table.columns().eq(0).each( function ( index ) {
+	    // var column = table.column( index );
+	    // var data = column.data();
+	    
+	    console.log("column["+index+"]: ", table.column(index).responsiveHidden());
+	    
+	    if (table.column(index).responsiveHidden() == false) {
+	    	console.log("Column to hide: ", index);
+	    	$("#salary-table th input.table-search").eq(index).hide();	
+	    }
+	} );
+	
+	console.log("count: ", table.columns().eq(0).length);
+	
 	/*
 	* Responsive resizing listener
 	* https://datatables.net/reference/event/responsive-resize
