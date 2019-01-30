@@ -167,7 +167,7 @@ function graph2(data) {
 	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
 	*/
 	
-	const heightMargin = 30;
+	const heightMargin = 50;
 	const widthMargin = 300;
     const width = 1200 - 2 * widthMargin;
     const height = 900 - 2 * heightMargin;
@@ -237,7 +237,7 @@ function graph2(data) {
 	  	return widthMargin + (xScale(d.avg_base) / 2) - 30; 
 	  }))
 	  //.attr("y", function(d) { return yScale(d.COL_DIV_CODE) + 36; })
-	  .attr("y", function(d) { return yScale(d.COL_DIV_CODE) + yScale.bandwidth() + 12; })
+	  .attr("y", function(d) { return yScale(d.COL_DIV_CODE) + yScale.bandwidth() + 32; })
 	  .attr("dy", ".75em")
 	  .text(function(d) { return "$" + formatMoney(d.avg_base,2, ".", ","); });   	  
 	
@@ -257,11 +257,11 @@ function graph2(data) {
 	//     .attr('text-anchor', 'middle')
 	//     .text('Base ($)');
 
-	// svg.append('text')
-	//     .attr('x', width / 2 + margin)
-	//     .attr('y', height + 120)
-	//     .attr('text-anchor', 'middle')
-	//     .text('X Label');
+	svg.append('text')
+	    .attr('x', width / 2 + widthMargin)
+	    .attr('y', 0 + 10)
+	    .attr('text-anchor', 'middle')
+	    .text('Base Pay ($)');
 	
 	
 	// Sort bars by value
@@ -311,7 +311,7 @@ function graph2(data) {
 			.duration(500)
 			.attr("y", function(d, i) {
 				console.log("moving text");
-				return yScale(d.COL_DIV_CODE) + 37;
+				return yScale(d.COL_DIV_CODE) + 55;
 			})
 			
 		chart.select('g.y-axis')
