@@ -61,4 +61,17 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Made table responsive so it hides columns starting at the right, but the search box still stayed there
 * Created a listener to hide the search box on columns change
 * Created a favicon.ico
+* Got the "College of" fix applied to 2 columns in the datatable to make things cleaner
+* Added $ value labels to the bars in the chart and got those to move (after some effort) when sorting
+* Change sort option labels from "Ascending/Descending" to arrows up/down
+* Changed template to get rid of sidebar and put the links into the top bar. Hopefully that helps with some width scaling issues
+
+1/29/19
+* Moved task to Incoming: "Show $ value bar labels on hover". Decided it's too hard not worth the effort
+* Added copyright to header
+* Added x-axis label and adjusted the manual pixels accordingly
+* Cleaned up old code
+* Completed Sprint 2 2 days early and merged to Master
+
+**Sprint 3**
 
