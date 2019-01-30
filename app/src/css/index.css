@@ -172,6 +172,10 @@ ul.pagination a {
 /*
  * Navbar
  */
+ 
+ nav .author {
+   color: white;
+ }
 
 .navbar-brand {
   padding-top: .75rem;
