@@ -1,24 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+  
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/rocket.ico"> 
 
-	<title>IT680 - Phase 1</title>
+    <title>Salary Explorer</title>
 	
-	<!-- Stylesheets -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="css/app.min.css" />
+	  <!-- Vendor CSS -->
+    <link rel="stylesheet" type="text/css" href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" />
+    
+    <!-- App CSS -->
+	  <link rel="stylesheet" type="text/css" href="css/app.min.css" />
+	
 </head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">MNSU Salary Explorer v1.0</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+          <li class="nav-item">
+              <a class="nav-link" href="index.html">
+                  <svg class="icon icon-home">
+                      <use xlink:href="img/symbol-defs.svg#icon-home"></use>
+                  </svg>
+                  Home <span class="sr-only"></span>
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="table.html">
+                  <svg class="icon icon-table2">
+                      <use xlink:href="img/symbol-defs.svg#icon-table2"></use>
+                  </svg>
+                  Table
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link active" href="chart.html">
+                  <svg class="icon icon-stats-bars">
+                      <use xlink:href="img/symbol-defs.svg#icon-stats-bars"></use>
+                  </svg>
+                  Charts
+              </a>
+          </li>
+      </ul>
+    </div>
+    <div class="author">
+      &copy; Dan Salmon - MIT license
+    </div>
+  </nav>
     
-    <button id="byValue">Sort by Value</button>
-
-	<div class="chart"></div>
-	<svg />
-
-
-	<!-- Bootstrap JS -->
+    <div class="container-fluid">
+      <div class="row">
+        <main role="main" class="col-xs-11 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <h1 class="h2">Chart</h1>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" id="sort-value-asc" href="#">Value ▲</a>
+                <a class="dropdown-item" id="sort-value-desc" href="#">Value ▼</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="sort-college-asc" href="#">College ▲</a>
+                <a class="dropdown-item" id="sort-college-desc" href="#">College ▼</a>
+              </div>
+            </div>
+            
+        	<div class="chart"></div>
+	        <svg id="bar-chart"></svg>
+	        
+        </main>
+      </div>
+    </div>
+    
+    
+    <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha256-MSYVjWgrr6UL/9eQfQvOyt6/gsxb6dpwI1zqM5DbLCs=" crossorigin="anonymous"></script>
     
@@ -32,86 +97,8 @@
     <script>
         $(document).ready(function() {
             loadData(function(data) {
-                // graph2(data);
-                // console.log(data);
-                const sample2 = [
-                	{
-                		BASE: 44036,
-                		COL_DIV_CODE: "Facilities Management",
-                		EMPT_STATE_DATE: "20031017",
-                		FIRST_LAST_INITIALS: "TB",
-                		JOB_TITLE: "General Maintenance Wrkr Lead",
-                		LONG_DESC: "Building Services",
-                		TENURE_DEC_YR_MO: "",
-                		YTD: 16357.55
-                	},
-                	{
-                		BASE: 48399,
-                		COL_DIV_CODE: "Undergraduate Education",
-                		EMPT_STATE_DATE: "20110613",
-                		FIRST_LAST_INITIALS: "TN",
-                		JOB_TITLE: "MSUAASF Range C",
-                		LONG_DESC: "Center for Academic Success",
-                		TENURE_DEC_YR_MO: "",
-                		YTD: 19113.9
-                	},
-                	{
-                		BASE: 69381,
-                		COL_DIV_CODE: "Facilities Management",
-                		EMPT_STATE_DATE: "20160815",
-                		FIRST_LAST_INITIALS: "MK",
-                		JOB_TITLE: "State University Faculty",
-                		LONG_DESC: "Biological Sciences",
-                		TENURE_DEC_YR_MO: "202204",
-                		YTD: 23954.94
-                	},
-                	{
-                		BASE: 68471,
-                		COL_DIV_CODE: "Facilities Management",
-                		EMPT_STATE_DATE: "19970903",
-                		FIRST_LAST_INITIALS: "JC",
-                		JOB_TITLE: "MSUAASF Range C",
-                		LONG_DESC: "Business, College of",
-                		TENURE_DEC_YR_MO: "",
-                		YTD: 25899.06
-                	},
-                	{
-                		BASE: 74490,
-                		COL_DIV_CODE: "Facilities Management",
-                		EMPT_STATE_DATE: "20140818",
-                		FIRST_LAST_INITIALS: "AD",
-                		JOB_TITLE: "State University Faculty",
-                		LONG_DESC: "Physics & Astronomy",
-                		TENURE_DEC_YR_MO: "201904",
-                		YTD: 17763
-                	},
-                	{
-                		BASE: 48438,
-                		COL_DIV_CODE: "Undergraduate Education",
-                		EMPT_STATE_DATE: "20140609",
-                		FIRST_LAST_INITIALS: "KS",
-                		JOB_TITLE: "MSUAASF Range B",
-                		LONG_DESC: "Center for English Language Programs",
-                		TENURE_DEC_YR_MO: "",
-                		YTD: 4098.59
-                	},
-                	{
-                		BASE: 52367,
-                		COL_DIV_CODE: "Undergraduate Education",
-                		EMPT_STATE_DATE: "20110221",
-                		FIRST_LAST_INITIALS: "TM",
-                		JOB_TITLE: "Building Services Forman",
-                		LONG_DESC: "Building Services",
-                		TENURE_DEC_YR_MO: "",
-                		YTD: 18953.44
-                	}
-                ];
-
                 var groupedData = groupByCollege(data);
-                
-                graph2(groupedData);
-                // graphAverages(groupedData);
-                
+                graph(groupedData);
             });
         });
     </script>

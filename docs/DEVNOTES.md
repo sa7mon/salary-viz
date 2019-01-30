@@ -42,7 +42,23 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Really struggled with getting the labels to sort with the bars, so I took some time to write up a simplified version to post on bl.ocks.org and then [posted a question](https://stackoverflow.com/questions/54389499/how-to-move-tick-labels-in-horizontal-bar-chart) on StackOverflow. Someone responded in like 30 minutes with a perfect solution. 
 * Integrated the changes from the SO answer
 * The chart now sorts perfectly based on value, but gets cut off at bottom and isn't integrated into the template.
-* Decided it's time to call Sprint 1
+* Decided it's time to call Sprint 1. Merged dev into master
 
+**Sprint 2**
 
+1/27/19
+
+* After the merge, I integrated the chart into the overall template and fixed some ensuing problems with it.
+* My home internet was experiencing some issues and it made me realize how annoying it is that the browser has to go out and fetch the CSV over AJAX on each page load so I decided to cache it locally in LocalStorage.
+* Got LocalStorage caching working for the CSV for both the chart and table page
+* Increased the axis fonts a bit to improve readability 
+* Added the option to sort alphabetically by college name and moved the sort options to a dropdown
+* Added author information to the sidebar footer
+
+1/28/19
+
+* Styled table pagination area to make it black instead of bootstrap blue
+* Made table responsive so it hides columns starting at the right, but the search box still stayed there
+* Created a listener to hide the search box on columns change
+* Created a favicon.ico
 

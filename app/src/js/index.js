@@ -5,59 +5,69 @@
 * 	License: MIT
 */
 
-/* global d3 */
+/* global d3, localStorage, $, moment */ // <- Make linter happy
+
 
 var csvData; 
 
-const graphSample = [
-	{
-		COL_DIV_CODE: 'Academic Affairs',
-		BASE: 67778.9,
-	},
-	{
-		COL_DIV_CODE: 'Finance and Administration',
-		BASE: 75000.1,
-	},
-	{
-		COL_DIV_CODE: 'Arts and Humanities, College of',
-		BASE: 68109.0,
-	},
-];
-
 function loadData(handleData) {
-	$.ajax({
-        type: "GET",
-        url: "data/data_sampled.csv",
-        dataType: "text",
-        success: function(data) {
-			csvData = $.csv.toObjects(data);
-			for (var i = csvData.length - 1; i >= 0; i--) {
-				if (csvData[i]["BASE"] !== undefined) {
-					csvData[i]["BASE"] = Number(csvData[i]["BASE"].replace("$", "").replace(",",""));
+	if (localStorage.getItem("csvData") !== null) {
+		console.log("Using csvdata from LocalStorage...");
+		handleData(JSON.parse(localStorage.getItem("csvData")));
+	} else {
+		$.ajax({
+	        type: "GET",
+	        url: "data/data_sampled.csv",
+	        dataType: "text",
+	        success: function(data) {
+				csvData = $.csv.toObjects(data);
+				for (var i = csvData.length - 1; i >= 0; i--) {
+					if (csvData[i]["BASE"] !== undefined) {
+						csvData[i]["BASE"] = Number(csvData[i]["BASE"].replace("$", "").replace(",",""));
+					}
+					if (csvData[i]["YTD"] !== undefined) {
+						csvData[i]["YTD"] = Number(csvData[i]["YTD"].replace("$", "").replace(",",""));
+					}
 				}
-				if (csvData[i]["YTD"] !== undefined) {
-					csvData[i]["YTD"] = Number(csvData[i]["YTD"].replace("$", "").replace(",",""));
-				}
-			}
-			handleData(csvData);
-        },
-        error: function(data) {
-        	console.log("[loadData] Error loading data: ", data);
-        }
-	 });
+				localStorage.setItem("csvData", JSON.stringify(csvData));
+				handleData(csvData);
+	        },
+	        error: function(data) {
+	        	console.log("[loadData] Error loading data: ", data);
+	        }
+		});
+	}
 }
 
 function createTable(csvData) {
-	console.log(csvData);
 	// Initialize DataTable
     var table = $('#salary-table').DataTable( {
 		data: csvData,
 		"columns": [
 			{ "data": "FIRST_LAST_INITIALS", "title": "Initials"},	
-			{ "data": "LONG_DESC", "title": "Description"},
-			{ "data": "COL_DIV_CODE", "title": "Department"},
+			{ 
+				"data": "LONG_DESC", 
+				"title": "Description",
+				"render": function(data, type, row) {
+					if (type === "sort" || type === "type" || data == "") {
+						return data;
+					}
+					return cleanCollegeName(data)	
+				}
+			},
+			{ 
+				"data": "COL_DIV_CODE", 
+				"title": "Department",
+				"render": function(data, type, row) {
+					if (type === "sort" || type === "type" || data == "") {
+						return data;
+					}
+					return cleanCollegeName(data)
+				}
+			},
 			{ "data": "JOB_TITLE", "title": "Job Title"},
-			{ "data": "TENURE_DEC_YR_MO", 
+			{ 
+				"data": "TENURE_DEC_YR_MO", 
 				"title": "Tenure Date",
 				"render": function(data, type, row){
                 	if(type === "sort" || type === "type" || data == ""){
@@ -66,7 +76,8 @@ function createTable(csvData) {
                 	return moment(data, "YYYYMM").format("MMMM YYYY")
             	}			
 			},
-			{ "data": "EMPT_STATE_DATE", 
+			{ 
+				"data": "EMPT_STATE_DATE", 
 				"title": "Start Date",
 				"render": function(data, type, row){
                 	if(type === "sort" || type === "type" || data == ""){
@@ -75,20 +86,52 @@ function createTable(csvData) {
                 	return moment(data, "YYYYMMDD").format("MMM DD, YYYY")
 				}
 			},
-			{ "data": "BASE", 
+			{ 
+				"data": "BASE", 
 				"title": "Base",
 				"render": renderMoney
 			},
-			{ "data": "YTD",
+			{ 
+				"data": "YTD",
 				"title": "YTD",
 				"render": renderMoney
 			},
 		],
 		orderCellsTop: true,
 		fixedHeader: true,
-		//responsive: true
+		responsive: true
 	});
 	
+	// var table = $('#salary-table').dataTable().api();
+	table.columns().eq(0).each( function ( index ) {
+	    // var column = table.column( index );
+	    // var data = column.data();
+	    
+	    console.log("column["+index+"]: ", table.column(index).responsiveHidden());
+	    
+	    if (table.column(index).responsiveHidden() == false) {
+	    	console.log("Column to hide: ", index);
+	    	$("#salary-table th input.table-search").eq(index).hide();	
+	    }
+	} );
+	
+	console.log("count: ", table.columns().eq(0).length);
+	
+	/*
+	* Responsive resizing listener
+	* https://datatables.net/reference/event/responsive-resize
+	*/
+	table.on( 'responsive-resize', function ( e, datatable, columns ) {
+	    var inputs = $("#salary-table th input.table-search");
+	    for (var i=0; i < inputs.length; i++) {
+	    	if (columns[i] == true) {
+	    		inputs.eq(i).show();
+	    	} else {
+	    		inputs.eq(i).hide();
+	    	}
+	    }
+	});
+		
 	/**
 	 * Add column filtering 
 	 * https://datatables.net/extensions/fixedheader/examples/options/columnFiltering.html
@@ -120,41 +163,23 @@ function createTable(csvData) {
 }
 
 function graph(data) {
-	d3.select(".chart")
-	.selectAll("div")
-	.data(data)
-		.enter()
-		.append("div")
-		.style("width", function(d) { return d["BASE"] / 100 + "px"; })
-		.text(function(d) { return d["BASE"]; });
-}
-
-function graph2(data) {
 	/*
 	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
 	*/
 	
-	const heightMargin = 120;
+	const heightMargin = 50;
 	const widthMargin = 300;
     const width = 1200 - 2 * widthMargin;
-    const height = 1600 - 2 * heightMargin;
+    const height = 900 - 2 * heightMargin;
     
     const maxObj = data.reduce(function(max, obj) {
     	// https://stackoverflow.com/a/35690350/2307994
 		return obj.avg_base > max.avg_base? obj : max;
 	});
 	
-	const svg = d3.select('svg');
+	const svg = d3.select('svg#bar-chart');
 	const chart = svg.append('g')
     .attr('transform', `translate(${widthMargin}, ${heightMargin})`);
-    
-    // Draw Y scale
-    // const yScale = d3.scaleLinear()
-    // .range([height, 0])
-    // .domain([0, maxObj.BASE]);
-    
-    // chart.append('g')
-    // 	.call(d3.axisLeft(yScale));
     
     // Draw X axis
 	const xScale = d3.scaleLinear()
@@ -163,6 +188,7 @@ function graph2(data) {
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
+	    .attr('class', 'x-axis')
 	    .call(d3.axisTop(xScale));
     
     // Draw Y axis
@@ -189,18 +215,39 @@ function graph2(data) {
 	        .tickSize(-height, 0, 0)
 	        .tickFormat(''));
 	
-	// // Draw bars
+	// Draw bars
 	chart.selectAll()
 	    .data(data)
 	    .enter()
 	    .append('rect')
 	    .attr("class","bar")
-	    .attr('style', 'fill: steelblue')
+	    .attr('style', 'fill: #343a40')
 	    .attr('y', (s) => yScale(s.COL_DIV_CODE))
 	    .attr('x', 0)
 	    // .attr('width', (s) => width - xScale(s.BASE))
 	    .attr('width', (s) => xScale(s.avg_base))
 	    .attr('height', yScale.bandwidth());
+	    
+	svg.selectAll(".text")  		
+	  .data(data)
+	  .enter()
+	  .append("text")
+	  .attr("class","label")
+	  .attr("x", (function(d) { 
+	  	return widthMargin + (xScale(d.avg_base) / 2) - 30; 
+	  }))
+	  //.attr("y", function(d) { return yScale(d.COL_DIV_CODE) + 36; })
+	  .attr("y", function(d) { return yScale(d.COL_DIV_CODE) + yScale.bandwidth() + 32; })
+	  .attr("dy", ".75em")
+	  .text(function(d) { return "$" + formatMoney(d.avg_base,2, ".", ","); });   	  
+	
+	d3.selectAll(".bar")
+	.on("mouseover", function() {
+    	d3.select(this).style("fill", "steelblue");
+    })
+    .on("mouseout", function() {
+        d3.select(this).style("fill", "#343a40");
+    });
 	    
 	// // Axis labels
 	// svg.append('text')
@@ -210,136 +257,68 @@ function graph2(data) {
 	//     .attr('text-anchor', 'middle')
 	//     .text('Base ($)');
 
-	// svg.append('text')
-	//     .attr('x', width / 2 + margin)
-	//     .attr('y', height + 120)
-	//     .attr('text-anchor', 'middle')
-	//     .text('X Label');
+	svg.append('text')
+	    .attr('x', width / 2 + widthMargin)
+	    .attr('y', 0 + 10)
+	    .attr('text-anchor', 'middle')
+	    .text('Base Pay ($)');
 	
 	
 	// Sort bars by value
 	
-	d3.select("#byValue").on("click", function() {
+	d3.select("#sort-value-asc").on("click", function() {
+		data.sort(function(a,b) {
+			return d3.ascending(a.avg_base, b.avg_base);
+		});
+		changeSort();		
+	});
+	
+	d3.select("#sort-value-desc").on("click", function() {
 		data.sort(function(a,b) {
 			return d3.descending(a.avg_base, b.avg_base);
 		});
-		
+		changeSort();		
+	});
+	
+	d3.select("#sort-college-asc").on("click", function(btn) {
+		data.sort(function(a,b) {
+			return d3.ascending(a.COL_DIV_CODE, b.COL_DIV_CODE);
+		});	
+		changeSort();
+	});
+	
+	d3.select("#sort-college-desc").on("click", function(btn) {
+		data.sort(function(a,b) {
+			return d3.descending(a.COL_DIV_CODE, b.COL_DIV_CODE);
+		});	
+		changeSort();
+	});
+	
+	function changeSort() {
 		yScale.domain(data.map(function(d) {
 			return d.COL_DIV_CODE;
 		}));
-		
-		console.log(data);
 		
 		svg.selectAll(".bar")
 			.transition()
 			.duration(500)
 			.attr("y", function(d, i) {
-				console.log("bar: ", d.avg_base, " ", yScale(d.avg_base));
 				return yScale(d.COL_DIV_CODE);
 			});
-			
-		// svg.selectAll(".bar-label")
-		//     .transition()
-		//     .duration(500)
-		//     .attr("y", function(d) {
-		//     	var obj = findObjectByCollegeName(d, data);
-		//     	console.log("label: ", obj.avg_base, " ", yScale(obj.avg_base));
-		//     	return yScale(obj.COL_DIV_CODE) + yScale.bandwidth() / 2 - 8;
-		//     });
 		
+		svg.selectAll(".label")
+			.transition()
+			.duration(500)
+			.attr("y", function(d, i) {
+				console.log("moving text");
+				return yScale(d.COL_DIV_CODE) + 55;
+			})
+			
 		chart.select('g.y-axis')
 			.transition()
 				.duration(500)
 			.call(axisLeft);
-		
-		    // .attr("transform", function(d, i) {
-	    	// 	var obj = findObjectByCollegeName(d, data);
-		    // 	return "translate( 0," + (yScale(obj.avg_base) + yScale.bandwidth() / 2 - 8) + ")";
-		    // })
-		    // .attr("transform", function(e, j) {
-		    // 	console.log(yScale(e.COL_DIV_CODE));
-		    //   return "translate(0," + yScale(e.COL_DIV_CODE) + ")";
-		    // })
-		    
-		
-	});
-	    
-
-}
-
-function graphAverages(data) {
-	/*
-	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
-	*/
-	
-	const margin = 80;
-    const width = 1200 - 2 * margin;
-    const height = 600 - 2 * margin;
-    
-    const maxObj = data.reduce(function(max, obj) {
-    	// https://stackoverflow.com/a/35690350/2307994
-		return obj.avg_base > max.avg_base? obj : max;
-	});
-	
-	const svg = d3.select('svg');
-	const chart = svg.append('g')
-    .attr('transform', `translate(${margin}, ${margin})`);
-    
-    // Draw Y scale
-    const yScale = d3.scaleLinear()
-    .range([height, 0])
-    .domain([0, maxObj.avg_base]);
-    
-    chart.append('g')
-    	.call(d3.axisLeft(yScale));
-    
-    // Draw X scale
-    const xScale = d3.scaleBand()
-	    .range([0, width])
-	    .domain(data.map((s) => s.COL_DIV_CODE))
-	    .padding(0.2);
-
-	chart.append('g')
-	    .attr('transform', `translate(0, ${height})`)
-	    .call(d3.axisBottom(xScale))
-	    .selectAll("text")
-		    .style("text-anchor", "end")
-	        .attr("dx", "-.8em")
-	        .attr("dy", ".15em")
-	        .attr("transform", "rotate(-35)");
-	    
-	// Draw gridlines - horizontal
-	chart.append('g')
-	    .attr('class', 'grid')
-	    .call(d3.axisLeft()
-	        .scale(yScale)
-	        .tickSize(-width, 0, 0)
-	        .tickFormat(''))
-	
-	// Draw bars
-	chart.selectAll()
-	    .data(data)
-	    .enter()
-	    .append('rect')
-	    .attr('style', 'fill: steelblue')
-	    .attr('x', (s) => xScale(s.COL_DIV_CODE))
-	    .attr('y', (s) => yScale(s.avg_base))
-	    .attr('height', (s) => height - yScale(s.avg_base))
-	    .attr('width', xScale.bandwidth());
-	    
-	// Axis labels
-	svg.append('text')
-	    .attr('x', -(height / 2) - margin)
-	    .attr('y', margin / 2.4)
-	    .attr('transform', 'rotate(-90)')
-	    .attr('text-anchor', 'middle')
-	    .text('Base ($)');
-
-	// svg.append('text')
-	//     .attr('x', width / 2 + margin)
-	//     .attr('y', height + 120)
-	//     .attr('text-anchor', 'middle')
-	//     .text('X Label');
+	}
 }
 
 function renderMoney(data, type, row) {
