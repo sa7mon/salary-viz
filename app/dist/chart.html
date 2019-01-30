@@ -11,7 +11,7 @@
     <title>Salary Explorer</title>
 	
 	  <!-- Vendor CSS -->
-    <link rel="stylesheet" type="text/css" href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/template.min.css" />
     
     <!-- App CSS -->
 	  <link rel="stylesheet" type="text/css" href="css/app.min.css" />
@@ -82,25 +82,24 @@
       </div>
     </div>
     
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha256-MSYVjWgrr6UL/9eQfQvOyt6/gsxb6dpwI1zqM5DbLCs=" crossorigin="anonymous"></script>
+    <!-- Bootstrap & jQuery JS -->
+    <script src="js/template.min.js"></script>
     
     <!-- Vendor JS -->
-    <script src="js/vendor.min.js"></script>
+    <!--<script src="js/vendor.min.js"></script>-->
     
     <script src="https://d3js.org/d3.v5.min.js"></script>
 
     <!-- Custom JS -->
     <script src="js/app.min.js"></script>
     <script>
-        $(document).ready(function() {
-            loadData(function(data) {
-                var groupedData = groupByCollege(data);
-                graph(groupedData);
-            });
-        });
+      /* global $, graph, loadData, groupByCollege */
+      $(document).ready(function() {
+          loadData(function(data) {
+              var groupedData = groupByCollege(data);
+              graph(groupedData);
+          });
+      });
     </script>
 	
 </body>

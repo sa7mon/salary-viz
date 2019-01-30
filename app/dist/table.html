@@ -4,20 +4,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="MNSU Salary Explorer v1.0">
+    <meta name="author" content="Dan Salmon">
     <link rel="icon" href="img/rocket.ico"> 
 
     <title>Salary Explorer</title>
 
+    <!-- Teamplate CSS -->
+    <link rel="stylesheet" type="text/css" href="css/template.min.css" />
+  
     <!-- Vendor CSS -->
-    <link rel="stylesheet" type="text/css" href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.bootstrap4.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/datatables.min.css" />
 
     <!-- Custom CSS -->
-    <link href="css/app.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/app.min.css" />
 </head>
 
 <body>
@@ -76,9 +76,8 @@
     </div>
 
     
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha256-MSYVjWgrr6UL/9eQfQvOyt6/gsxb6dpwI1zqM5DbLCs=" crossorigin="anonymous"></script>
+    <!-- Bootstrap & jQuery JS -->
+    <script src="js/template.min.js"></script>
     
     <!-- Vendor JS -->
     <script src="js/vendor.min.js"></script>
@@ -89,6 +88,7 @@
     <!-- Custom JS -->
     <script src="js/app.min.js"></script>
     <script>
+        /* global $, createTable, loadData */
         $(document).ready(function() {
             loadData(function(data) {
                 createTable(data);
