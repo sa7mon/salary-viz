@@ -58,51 +58,10 @@
     
     <div class="container-fluid">
       <div class="row">
-        <!--<nav class="col-md-2 d-none d-md-block bg-light sidebar">-->
-        <!--  <div class="sidebar-sticky">-->
-        <!--    <ul class="nav flex-column">-->
-        <!--      <li class="nav-item">-->
-        <!--        <a class="nav-link" href="index.html">-->
-        <!--          <svg class="icon icon-home">-->
-        <!--            <use xlink:href="img/symbol-defs.svg#icon-home"></use>-->
-        <!--          </svg>-->
-        <!--          Home <span class="sr-only"></span>-->
-        <!--        </a>-->
-        <!--      </li>-->
-        <!--      <li class="nav-item">-->
-        <!--        <a class="nav-link" href="table.html">-->
-        <!--          <svg class="icon icon-table2">-->
-        <!--            <use xlink:href="img/symbol-defs.svg#icon-table2"></use>-->
-        <!--          </svg>-->
-        <!--          Table-->
-        <!--        </a>-->
-        <!--      </li>-->
-        <!--      <li class="nav-item">-->
-        <!--        <a class="nav-link active" href="#">-->
-        <!--          <svg class="icon icon-stats-bars">-->
-        <!--            <use xlink:href="img/symbol-defs.svg#icon-stats-bars"></use>-->
-        <!--          </svg>-->
-        <!--          Charts-->
-        <!--        </a>-->
-        <!--      </li>-->
-        <!--    </ul>-->
-          
-        <!--    <div class="sidebar-footer">-->
-        <!--      &copy; <a href="https://danthesalmon.com" target="_blank">Dan Salmon</a>-->
-        <!--      <br />-->
-        <!--      <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a> license-->
-        <!--    </div>-->
-        <!--  </div>-->
-        <!--</nav>-->
-
         <main role="main" class="col-xs-11 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
                 <h1 class="h2">Chart</h1>
             </div>
-            
-            <!--<button id="byValue" data-sort="value" class="sort-btn btn">Sort by Value</button>-->
-            <!--<button id="byCollege" data-sort="college" class="sort-btn btn">Sort by College</button>-->
-            
             <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Sort
@@ -138,86 +97,8 @@
     <script>
         $(document).ready(function() {
             loadData(function(data) {
-                // graph2(data);
-                // console.log(data);
-                // const sample2 = [
-                // 	{
-                // 		BASE: 44036,
-                // 		COL_DIV_CODE: "Facilities Management",
-                // 		EMPT_STATE_DATE: "20031017",
-                // 		FIRST_LAST_INITIALS: "TB",
-                // 		JOB_TITLE: "General Maintenance Wrkr Lead",
-                // 		LONG_DESC: "Building Services",
-                // 		TENURE_DEC_YR_MO: "",
-                // 		YTD: 16357.55
-                // 	},
-                // 	{
-                // 		BASE: 48399,
-                // 		COL_DIV_CODE: "Undergraduate Education",
-                // 		EMPT_STATE_DATE: "20110613",
-                // 		FIRST_LAST_INITIALS: "TN",
-                // 		JOB_TITLE: "MSUAASF Range C",
-                // 		LONG_DESC: "Center for Academic Success",
-                // 		TENURE_DEC_YR_MO: "",
-                // 		YTD: 19113.9
-                // 	},
-                // 	{
-                // 		BASE: 69381,
-                // 		COL_DIV_CODE: "Facilities Management",
-                // 		EMPT_STATE_DATE: "20160815",
-                // 		FIRST_LAST_INITIALS: "MK",
-                // 		JOB_TITLE: "State University Faculty",
-                // 		LONG_DESC: "Biological Sciences",
-                // 		TENURE_DEC_YR_MO: "202204",
-                // 		YTD: 23954.94
-                // 	},
-                // 	{
-                // 		BASE: 68471,
-                // 		COL_DIV_CODE: "Facilities Management",
-                // 		EMPT_STATE_DATE: "19970903",
-                // 		FIRST_LAST_INITIALS: "JC",
-                // 		JOB_TITLE: "MSUAASF Range C",
-                // 		LONG_DESC: "Business, College of",
-                // 		TENURE_DEC_YR_MO: "",
-                // 		YTD: 25899.06
-                // 	},
-                // 	{
-                // 		BASE: 74490,
-                // 		COL_DIV_CODE: "Facilities Management",
-                // 		EMPT_STATE_DATE: "20140818",
-                // 		FIRST_LAST_INITIALS: "AD",
-                // 		JOB_TITLE: "State University Faculty",
-                // 		LONG_DESC: "Physics & Astronomy",
-                // 		TENURE_DEC_YR_MO: "201904",
-                // 		YTD: 17763
-                // 	},
-                // 	{
-                // 		BASE: 48438,
-                // 		COL_DIV_CODE: "Undergraduate Education",
-                // 		EMPT_STATE_DATE: "20140609",
-                // 		FIRST_LAST_INITIALS: "KS",
-                // 		JOB_TITLE: "MSUAASF Range B",
-                // 		LONG_DESC: "Center for English Language Programs",
-                // 		TENURE_DEC_YR_MO: "",
-                // 		YTD: 4098.59
-                // 	},
-                // 	{
-                // 		BASE: 52367,
-                // 		COL_DIV_CODE: "Undergraduate Education",
-                // 		EMPT_STATE_DATE: "20110221",
-                // 		FIRST_LAST_INITIALS: "TM",
-                // 		JOB_TITLE: "Building Services Forman",
-                // 		LONG_DESC: "Building Services",
-                // 		TENURE_DEC_YR_MO: "",
-                // 		YTD: 18953.44
-                // 	}
-                // ];
-
                 var groupedData = groupByCollege(data);
-                
-                graph2(groupedData);
-                // graphAverages(groupedData);
-                
+                graph(groupedData);
             });
         });
     </script>

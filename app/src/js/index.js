@@ -162,7 +162,7 @@ function createTable(csvData) {
     } );
 }
 
-function graph2(data) {
+function graph(data) {
 	/*
 	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
 	*/
@@ -319,81 +319,6 @@ function graph2(data) {
 				.duration(500)
 			.call(axisLeft);
 	}
-}
-
-function graphAverages(data) {
-	/*
-	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
-	*/
-	
-	const margin = 80;
-    const width = 1200 - 2 * margin;
-    const height = 600 - 2 * margin;
-    
-    const maxObj = data.reduce(function(max, obj) {
-    	// https://stackoverflow.com/a/35690350/2307994
-		return obj.avg_base > max.avg_base? obj : max;
-	});
-	
-	const svg = d3.select('svg');
-	const chart = svg.append('g')
-    .attr('transform', `translate(${margin}, ${margin})`);
-    
-    // Draw Y scale
-    const yScale = d3.scaleLinear()
-    .range([height, 0])
-    .domain([0, maxObj.avg_base]);
-    
-    chart.append('g')
-    	.call(d3.axisLeft(yScale));
-    
-    // Draw X scale
-    const xScale = d3.scaleBand()
-	    .range([0, width])
-	    .domain(data.map((s) => s.COL_DIV_CODE))
-	    .padding(0.2);
-
-	chart.append('g')
-	    .attr('transform', `translate(0, ${height})`)
-	    .call(d3.axisBottom(xScale))
-	    .selectAll("text")
-		    .style("text-anchor", "end")
-	        .attr("dx", "-.8em")
-	        .attr("dy", ".15em")
-	        .attr("transform", "rotate(-35)");
-	    
-	// Draw gridlines - horizontal
-	chart.append('g')
-	    .attr('class', 'grid')
-	    .call(d3.axisLeft()
-	        .scale(yScale)
-	        .tickSize(-width, 0, 0)
-	        .tickFormat(''))
-	
-	// Draw bars
-	chart.selectAll()
-	    .data(data)
-	    .enter()
-	    .append('rect')
-	    .attr('style', 'fill: steelblue')
-	    .attr('x', (s) => xScale(s.COL_DIV_CODE))
-	    .attr('y', (s) => yScale(s.avg_base))
-	    .attr('height', (s) => height - yScale(s.avg_base))
-	    .attr('width', xScale.bandwidth());
-	    
-	// Axis labels
-	svg.append('text')
-	    .attr('x', -(height / 2) - margin)
-	    .attr('y', margin / 2.4)
-	    .attr('transform', 'rotate(-90)')
-	    .attr('text-anchor', 'middle')
-	    .text('Base ($)');
-
-	// svg.append('text')
-	//     .attr('x', width / 2 + margin)
-	//     .attr('y', height + 120)
-	//     .attr('text-anchor', 'middle')
-	//     .text('X Label');
 }
 
 function renderMoney(data, type, row) {
