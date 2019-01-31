@@ -79,5 +79,11 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Add a gulp task to combine and minify css instead of CDN links
 * Started work on the graphing and grouping functions to make it column-name independent. This way we can add functionality to group the data by college/YTD average in addition to college/base average. 
 
+1/31/19
+* Added functionality to change the graph to YTD instead of base
+* There were too many ticks with the YTD graph so I limited them to 8 manually
+* Add v2 of the csv data and edit the column name to use it
+* Tried adding a loading icon to show while the table was being generated but the table generates fast enough that the icon doesn't even show before the table appears. Scapped that issue.
+* Bold the x-axis label
 
 
