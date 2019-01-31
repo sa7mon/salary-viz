@@ -75,3 +75,9 @@ Lessons learned (plans, successes, mistakes, improvements)
 
 **Sprint 3**
 
+1/30/19
+* Add a gulp task to combine and minify css instead of CDN links
+* Started work on the graphing and grouping functions to make it column-name independent. This way we can add functionality to group the data by college/YTD average in addition to college/base average. 
+
+
+
