@@ -12,7 +12,6 @@ var csvData;
 
 function loadData(handleData) {
 	if (localStorage.getItem("csvData") !== null) {
-		// console.log("Using csvdata from LocalStorage...");
 		handleData(JSON.parse(localStorage.getItem("csvData")));
 	} else {
 		$.ajax({
@@ -102,20 +101,11 @@ function createTable(csvData) {
 		responsive: true
 	});
 	
-	// var table = $('#salary-table').dataTable().api();
 	table.columns().eq(0).each( function ( index ) {
-	    // var column = table.column( index );
-	    // var data = column.data();
-	    
-	    console.log("column["+index+"]: ", table.column(index).responsiveHidden());
-	    
 	    if (table.column(index).responsiveHidden() == false) {
-	    	console.log("Column to hide: ", index);
 	    	$("#salary-table th input.table-search").eq(index).hide();	
 	    }
 	} );
-	
-	console.log("count: ", table.columns().eq(0).length);
 	
 	/*
 	* Responsive resizing listener
@@ -224,10 +214,10 @@ function graph(data, xAxisLabel) {
 	    .attr('style', 'fill: #343a40')
 	    .attr('y', (s) => yScale(s.COL_DIV_CODE))
 	    .attr('x', 0)
-	    // .attr('width', (s) => width - xScale(s.BASE))
 	    .attr('width', (s) => xScale(s.avg))
 	    .attr('height', yScale.bandwidth());
-	    
+	
+	// Draw value labels on the bars	    
 	svg.selectAll(".text")  		
 	  .data(data)
 	  .enter()
@@ -236,7 +226,6 @@ function graph(data, xAxisLabel) {
 	  .attr("x", (function(d) { 
 	  	return widthMargin + (xScale(d.avg) / 2) - 30; 
 	  }))
-	  //.attr("y", function(d) { return yScale(d.COL_DIV_CODE) + 36; })
 	  .attr("y", function(d) { return yScale(d.COL_DIV_CODE) + yScale.bandwidth() + 32; })
 	  .attr("dy", ".75em")
 	  .text(function(d) { return "$" + formatMoney(d.avg,2, ".", ","); });   	  
@@ -249,14 +238,14 @@ function graph(data, xAxisLabel) {
         d3.select(this).style("fill", "#343a40");
     });
 	    
-	// // Axis labels
 	// svg.append('text')
 	//     .attr('x', -(height / 2) - margin)
 	//     .attr('y', margin / 2.4)
 	//     .attr('transform', 'rotate(-90)')
 	//     .attr('text-anchor', 'middle')
 	//     .text('Base ($)');
-
+	
+	// x-axis label
 	svg.append('text')
 	    .attr('x', width / 2 + widthMargin)
 	    .attr('y', 0 + 10)
@@ -310,7 +299,6 @@ function graph(data, xAxisLabel) {
 			.transition()
 			.duration(500)
 			.attr("y", function(d, i) {
-				console.log("moving text");
 				return yScale(d.COL_DIV_CODE) + 55;
 			})
 			
@@ -365,18 +353,9 @@ function groupByCollege(data, columnName) {
 		collegeItem["avg"] = averages[college]["average"];
 		returnAverages.push(collegeItem);
 	}
-	// console.log(returnAverages);
 	
 	return returnAverages;
 }
-
-// function findObjectByCollegeName(name, data) {
-// 	for (var i=0;i<data.length;i++) {
-// 		if (data[i].COL_DIV_CODE == name) {
-// 			return data[i]
-// 		}
-// 	}
-// }
 
 function cleanCollegeName(name) {
 	// Take in college name like: 'Education, College of' 
