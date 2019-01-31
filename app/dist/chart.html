@@ -119,8 +119,9 @@
           let value = $("#groupBySelect").val();
           clearGraph();
           loadData(function(data) {
+            let xAxisLabel = (value == "BASE" ? "Base ($)": "YTD ($)");
             let groupedData = groupByCollege(data, value);
-            graph(groupedData, value);
+            graph(groupedData, xAxisLabel);
           });
         });
       });
