@@ -12,12 +12,12 @@ var csvData;
 
 function loadData(handleData) {
 	if (localStorage.getItem("csvData") !== null) {
-		console.log("Using csvdata from LocalStorage...");
+		// console.log("Using csvdata from LocalStorage...");
 		handleData(JSON.parse(localStorage.getItem("csvData")));
 	} else {
 		$.ajax({
 	        type: "GET",
-	        url: "data/data_sampled.csv",
+	        url: "data/data_sampled_v2.csv",
 	        dataType: "text",
 	        success: function(data) {
 				csvData = $.csv.toObjects(data);
@@ -44,7 +44,7 @@ function createTable(csvData) {
     var table = $('#salary-table').DataTable( {
 		data: csvData,
 		"columns": [
-			{ "data": "FIRST_LAST_INITIALS", "title": "Initials"},	
+			{ "data": "L_First", "title": "Name"},	
 			{ 
 				"data": "LONG_DESC", 
 				"title": "Description",
@@ -365,18 +365,18 @@ function groupByCollege(data, columnName) {
 		collegeItem["avg"] = averages[college]["average"];
 		returnAverages.push(collegeItem);
 	}
-	console.log(returnAverages);
+	// console.log(returnAverages);
 	
 	return returnAverages;
 }
 
-function findObjectByCollegeName(name, data) {
-	for (var i=0;i<data.length;i++) {
-		if (data[i].COL_DIV_CODE == name) {
-			return data[i]
-		}
-	}
-}
+// function findObjectByCollegeName(name, data) {
+// 	for (var i=0;i<data.length;i++) {
+// 		if (data[i].COL_DIV_CODE == name) {
+// 			return data[i]
+// 		}
+// 	}
+// }
 
 function cleanCollegeName(name) {
 	// Take in college name like: 'Education, College of' 
