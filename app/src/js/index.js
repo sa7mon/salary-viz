@@ -250,6 +250,7 @@ function graph(data, xAxisLabel) {
 	    .attr('x', width / 2 + widthMargin)
 	    .attr('y', 0 + 10)
 	    .attr('text-anchor', 'middle')
+	    .attr('font-weight', '700')
 	    .text(xAxisLabel);
 	
 	
