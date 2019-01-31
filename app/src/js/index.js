@@ -101,13 +101,6 @@ function createTable(csvData) {
 		responsive: true
 	});
 	
-	// table.columns().eq(0).each( function ( index ) {
-	// 	console.log("Column " + index + ": " + table.column(index).responsiveHidden());
-	//     if (table.column(index).responsiveHidden() == false) {
-	//     	$("#salary-table th input.table-search").eq(index).hide();	
-	//     }
-	// } );
-	
 	/*
 	* Responsive resizing listener
 	* https://datatables.net/reference/event/responsive-resize
@@ -138,7 +131,6 @@ function createTable(csvData) {
     		hidden = true;
     		$(this).hide();
     	}
-    	
     	if (i == 0) {
     		if (hidden) {
     			$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" style="display: none;" />' );	
