@@ -199,6 +199,7 @@ svg#loader-1 rect{
  
  nav .author {
    color: #bababa;
+   display: none;
  }
 
 .navbar-brand {
