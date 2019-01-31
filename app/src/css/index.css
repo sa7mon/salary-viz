@@ -47,7 +47,7 @@ input.table-search.width-1 {
 *  Chart rules
 */
 
-svg {
+svg#bar-chart {
   width: 89vw;
   height: 200vh;
 }
@@ -164,6 +164,25 @@ ul.pagination li.paginate_button.previous {
 
 ul.pagination a {
   color: black;
+}
+
+/* Loading icon*/
+
+.loader{
+  margin: 0 0 2em;
+  height: 100px;
+  width: 20%;
+  text-align: center;
+  padding: 1em;
+  margin: 0 auto 1em;
+  display: inline-block;
+  vertical-align: top;
+  position: absolute;
+}
+
+svg#loader-1 path,
+svg#loader-1 rect{
+  fill: #000;
 }
 
 /*
