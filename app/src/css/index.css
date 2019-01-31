@@ -166,6 +166,10 @@ ul.pagination a {
   color: black;
 }
 
+table#salary-table {
+  /*width: 100%;*/
+}
+
 /* Loading icon*/
 
 .loader{
@@ -225,4 +229,10 @@ svg#loader-1 rect{
 .form-control-dark:focus {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+@media only screen and (max-width: 1000px) {
+  #salary-table thead tr:nth-child(2) {
+    display: none;
+  }
 }

@@ -16,7 +16,7 @@ function loadData(handleData) {
 	} else {
 		$.ajax({
 	        type: "GET",
-	        url: "data/data_sampled_v2.csv",
+	        url: "data/data_full.csv",
 	        dataType: "text",
 	        success: function(data) {
 				csvData = $.csv.toObjects(data);
@@ -101,11 +101,12 @@ function createTable(csvData) {
 		responsive: true
 	});
 	
-	table.columns().eq(0).each( function ( index ) {
-	    if (table.column(index).responsiveHidden() == false) {
-	    	$("#salary-table th input.table-search").eq(index).hide();	
-	    }
-	} );
+	// table.columns().eq(0).each( function ( index ) {
+	// 	console.log("Column " + index + ": " + table.column(index).responsiveHidden());
+	//     if (table.column(index).responsiveHidden() == false) {
+	//     	$("#salary-table th input.table-search").eq(index).hide();	
+	//     }
+	// } );
 	
 	/*
 	* Responsive resizing listener
@@ -127,19 +128,36 @@ function createTable(csvData) {
 	 * https://datatables.net/extensions/fixedheader/examples/options/columnFiltering.html
 	 */
 	var num_columns = $('#salary-table thead tr:eq(0) th').length;
-	$('#salary-table thead').append('<tr></tr>');
+	$('#salary-table thead').append('<tr role="row"></tr>');
 	for (var i=0; i < num_columns; i++) {
 		$('#salary-table thead tr:eq(1)').append('<th></th>');
 	}
     $('#salary-table thead tr:eq(1) th').each( function (i) {
-    	if (i == 0) {
-    		$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" />' );
-    	} else if (i == 4 || i == 5 || i == 6 || i == 7) {
-    		$(this).html( '<input type="text" class="table-search width-1" placeholder="Search" />' );
-    	} else {
-    		$(this).html( '<input type="text" class="table-search" placeholder="Search" />' );
+    	var hidden;
+    	if (table.column(i).responsiveHidden() == false) {
+    		hidden = true;
+    		$(this).hide();
     	}
-        
+    	
+    	if (i == 0) {
+    		if (hidden) {
+    			$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" style="display: none;" />' );	
+    		} else {
+				$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" />' );	
+    		}
+    	} else if (i == 4 || i == 5 || i == 6 || i == 7) {
+    		if (hidden) {
+    			$(this).html( '<input type="text" class="table-search width-1" placeholder="Search" style="display: none;" />' );
+    		} else {
+    			$(this).html( '<input type="text" class="table-search width-1" placeholder="Search" />' );
+    		}
+    	} else {
+    		if (hidden) {
+    			$(this).html( '<input type="text" class="table-search" placeholder="Search" style="display: none;" />' );
+    		} else {
+    			$(this).html( '<input type="text" class="table-search" placeholder="Search" />' );
+    		}
+    	}
 		
         $( 'input', this ).on( 'keyup change', function () {
 			if ( table.column(i).search() !== this.value ) {
