@@ -179,7 +179,7 @@ function graph(data, xAxisLabel) {
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
 	    .attr('class', 'x-axis')
-	    .call(d3.axisTop(xScale));
+	    .call(d3.axisTop(xScale).ticks(8));
     
     // Draw Y axis
     const yScale = d3.scaleBand()
