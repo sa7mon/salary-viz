@@ -59,22 +59,37 @@
     <div class="container-fluid">
       <div class="row">
         <main role="main" class="col-xs-11 px-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                <h1 class="h2">Chart</h1>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+              <h1 class="h2">Chart</h1>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              
+              <form class="form-inline">
+                
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" id="sort-value-asc" href="#">Value ▲</a>
+                    <a class="dropdown-item" id="sort-value-desc" href="#">Value ▼</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" id="sort-college-asc" href="#">College ▲</a>
+                    <a class="dropdown-item" id="sort-college-desc" href="#">College ▼</a>
+                  </div>
+                </div>  
+                
+                <!--<label for="sel1">Select list:</label>-->
+                <select class="my-1 mr-sm-2 form-control" id="groupBySelect">
+                  <option value="BASE">Base</option>
+                  <option value="YTD">YTD</option>
+                </select>
+                
+              </form>
             </div>
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Sort
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" id="sort-value-asc" href="#">Value ▲</a>
-                <a class="dropdown-item" id="sort-value-desc" href="#">Value ▼</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="sort-college-asc" href="#">College ▲</a>
-                <a class="dropdown-item" id="sort-college-desc" href="#">College ▼</a>
-              </div>
-            </div>
-            
+          </div>
+          
         	<div class="chart"></div>
 	        <svg id="bar-chart"></svg>
 	        
@@ -93,13 +108,21 @@
     <!-- Custom JS -->
     <script src="js/app.min.js"></script>
     <script>
-      /* global $, graph, loadData, groupByCollege */
+      /* global $, graph, loadData, groupByCollege, d3 */
       $(document).ready(function() {
+        loadData(function(data) {
+            var groupedData = groupByCollege(data, "BASE");
+            graph(groupedData, "Base ($)");
+        });
+          
+        $( "#groupBySelect" ).change(function(d) {
+          let value = $("#groupBySelect").val();
+          clearGraph();
           loadData(function(data) {
-              var groupedData = groupByCollege(data, "BASE");
-              graph(groupedData);
-              // var groupedData2 = groupByCollegeYtd(data);
+            let groupedData = groupByCollege(data, value);
+            graph(groupedData, value);
           });
+        });
       });
     </script>
 	

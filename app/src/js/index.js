@@ -162,7 +162,7 @@ function createTable(csvData) {
     } );
 }
 
-function graph(data) {
+function graph(data, xAxisLabel) {
 	/*
 	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
 	*/
@@ -261,7 +261,7 @@ function graph(data) {
 	    .attr('x', width / 2 + widthMargin)
 	    .attr('y', 0 + 10)
 	    .attr('text-anchor', 'middle')
-	    .text('Base Pay ($)');
+	    .text(xAxisLabel);
 	
 	
 	// Sort bars by value
@@ -370,10 +370,6 @@ function groupByCollege(data, columnName) {
 	return returnAverages;
 }
 
-function groupByCollegeYtd(data) {
-	
-}
-
 function findObjectByCollegeName(name, data) {
 	for (var i=0;i<data.length;i++) {
 		if (data[i].COL_DIV_CODE == name) {
@@ -394,4 +390,8 @@ function cleanCollegeName(name) {
 	
 	return name.substr(name.lastIndexOf(",")+1, name.length).trim() + " " + // College of
 			name.substr(0, name.lastIndexOf(","));							// Education (etc.)
+}
+
+function clearGraph() {
+	d3.selectAll("svg#bar-chart > *").remove();
 }

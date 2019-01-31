@@ -48,7 +48,7 @@ input.table-search.width-1 {
 */
 
 svg {
-  width: 100%;
+  width: 89vw;
   height: 200vh;
 }
 
@@ -72,6 +72,11 @@ body {
 g.grid g.tick line {
   stroke: #bdbdbd;
 }
+
+select#groupBySelect {
+  margin-left: 20px;
+}
+
 /*
  * Sidebar
  */
