@@ -96,8 +96,9 @@
       /* global $, graph, loadData, groupByCollege */
       $(document).ready(function() {
           loadData(function(data) {
-              var groupedData = groupByCollege(data);
+              var groupedData = groupByCollege(data, "BASE");
               graph(groupedData);
+              // var groupedData2 = groupByCollegeYtd(data);
           });
       });
     </script>

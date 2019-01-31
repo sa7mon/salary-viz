@@ -174,7 +174,7 @@ function graph(data) {
     
     const maxObj = data.reduce(function(max, obj) {
     	// https://stackoverflow.com/a/35690350/2307994
-		return obj.avg_base > max.avg_base? obj : max;
+		return obj.avg > max.avg? obj : max;
 	});
 	
 	const svg = d3.select('svg#bar-chart');
@@ -184,7 +184,7 @@ function graph(data) {
     // Draw X axis
 	const xScale = d3.scaleLinear()
 	    .range([width, 0])
-	    .domain([maxObj.avg_base, 0]);
+	    .domain([maxObj.avg, 0]);
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
@@ -225,7 +225,7 @@ function graph(data) {
 	    .attr('y', (s) => yScale(s.COL_DIV_CODE))
 	    .attr('x', 0)
 	    // .attr('width', (s) => width - xScale(s.BASE))
-	    .attr('width', (s) => xScale(s.avg_base))
+	    .attr('width', (s) => xScale(s.avg))
 	    .attr('height', yScale.bandwidth());
 	    
 	svg.selectAll(".text")  		
@@ -234,12 +234,12 @@ function graph(data) {
 	  .append("text")
 	  .attr("class","label")
 	  .attr("x", (function(d) { 
-	  	return widthMargin + (xScale(d.avg_base) / 2) - 30; 
+	  	return widthMargin + (xScale(d.avg) / 2) - 30; 
 	  }))
 	  //.attr("y", function(d) { return yScale(d.COL_DIV_CODE) + 36; })
 	  .attr("y", function(d) { return yScale(d.COL_DIV_CODE) + yScale.bandwidth() + 32; })
 	  .attr("dy", ".75em")
-	  .text(function(d) { return "$" + formatMoney(d.avg_base,2, ".", ","); });   	  
+	  .text(function(d) { return "$" + formatMoney(d.avg,2, ".", ","); });   	  
 	
 	d3.selectAll(".bar")
 	.on("mouseover", function() {
@@ -268,14 +268,14 @@ function graph(data) {
 	
 	d3.select("#sort-value-asc").on("click", function() {
 		data.sort(function(a,b) {
-			return d3.ascending(a.avg_base, b.avg_base);
+			return d3.ascending(a.avg, b.avg);
 		});
 		changeSort();		
 	});
 	
 	d3.select("#sort-value-desc").on("click", function() {
 		data.sort(function(a,b) {
-			return d3.descending(a.avg_base, b.avg_base);
+			return d3.descending(a.avg, b.avg);
 		});
 		changeSort();		
 	});
@@ -340,17 +340,19 @@ function formatMoney(n, c, d, t) {
   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 
-function groupByCollege(data) {
+function groupByCollege(data, columnName) {
 	let averages = {};
+	// let column;
+	
 	for (var i = 0, len = data.length; i < len; i++) {
 		let element = data[i];
 		
 		if (averages[element.COL_DIV_CODE] == undefined) {
 			averages[element.COL_DIV_CODE] = {};
-			averages[element.COL_DIV_CODE]["sum"] = element.BASE;
+			averages[element.COL_DIV_CODE]["sum"] = element[columnName];
 			averages[element.COL_DIV_CODE]["count"] = 1;
 		} else {
-			averages[element.COL_DIV_CODE]["sum"] += element.BASE;
+			averages[element.COL_DIV_CODE]["sum"] += element[columnName];
 			averages[element.COL_DIV_CODE]["count"] += 1;
 		}
 		averages[element.COL_DIV_CODE]["average"] = averages[element.COL_DIV_CODE]["sum"] / averages[element.COL_DIV_CODE]["count"];
@@ -360,12 +362,16 @@ function groupByCollege(data) {
 	for(var college in averages) {
 		let collegeItem = {};
 		collegeItem["COL_DIV_CODE"] = cleanCollegeName(college);
-		collegeItem["avg_base"] = averages[college]["average"];
+		collegeItem["avg"] = averages[college]["average"];
 		returnAverages.push(collegeItem);
 	}
 	console.log(returnAverages);
 	
 	return returnAverages;
+}
+
+function groupByCollegeYtd(data) {
+	
 }
 
 function findObjectByCollegeName(name, data) {
