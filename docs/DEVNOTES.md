@@ -61,4 +61,29 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Made table responsive so it hides columns starting at the right, but the search box still stayed there
 * Created a listener to hide the search box on columns change
 * Created a favicon.ico
+* Got the "College of" fix applied to 2 columns in the datatable to make things cleaner
+* Added $ value labels to the bars in the chart and got those to move (after some effort) when sorting
+* Change sort option labels from "Ascending/Descending" to arrows up/down
+* Changed template to get rid of sidebar and put the links into the top bar. Hopefully that helps with some width scaling issues
+
+1/29/19
+* Moved task to Incoming: "Show $ value bar labels on hover". Decided it's too hard not worth the effort
+* Added copyright to header
+* Added x-axis label and adjusted the manual pixels accordingly
+* Cleaned up old code
+* Completed Sprint 2 2 days early and merged to Master
+
+**Sprint 3**
+
+1/30/19
+* Add a gulp task to combine and minify css instead of CDN links
+* Started work on the graphing and grouping functions to make it column-name independent. This way we can add functionality to group the data by college/YTD average in addition to college/base average. 
+
+1/31/19
+* Added functionality to change the graph to YTD instead of base
+* There were too many ticks with the YTD graph so I limited them to 8 manually
+* Add v2 of the csv data and edit the column name to use it
+* Tried adding a loading icon to show while the table was being generated but the table generates fast enough that the icon doesn't even show before the table appears. Scapped that issue.
+* Bold the x-axis label
+
 

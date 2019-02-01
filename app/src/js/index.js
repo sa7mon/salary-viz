@@ -8,43 +8,47 @@
 /* global d3, localStorage, $, moment */ // <- Make linter happy
 
 
-var csvData; 
-
-function loadData(handleData) {
-	if (localStorage.getItem("csvData") !== null) {
-		console.log("Using csvdata from LocalStorage...");
-		handleData(JSON.parse(localStorage.getItem("csvData")));
-	} else {
-		$.ajax({
-	        type: "GET",
-	        url: "data/data_sampled.csv",
-	        dataType: "text",
-	        success: function(data) {
-				csvData = $.csv.toObjects(data);
-				for (var i = csvData.length - 1; i >= 0; i--) {
-					if (csvData[i]["BASE"] !== undefined) {
-						csvData[i]["BASE"] = Number(csvData[i]["BASE"].replace("$", "").replace(",",""));
-					}
-					if (csvData[i]["YTD"] !== undefined) {
-						csvData[i]["YTD"] = Number(csvData[i]["YTD"].replace("$", "").replace(",",""));
-					}
-				}
-				localStorage.setItem("csvData", JSON.stringify(csvData));
-				handleData(csvData);
-	        },
-	        error: function(data) {
-	        	console.log("[loadData] Error loading data: ", data);
-	        }
-		});
+/**
+ * Makes college names more readable.
+ *
+ * Take in college name like: 'Education, College of' and return 
+ * 'College of Education'
+ * 
+ * @param {string}	name	Name of college to clean
+ * @return {string}	Cleaned college name
+ */ 
+function cleanCollegeName(name) {
+	let matches = name.match(/,.+ of/g);
+	
+	if (matches === null) {
+		return name;
 	}
+	
+	return name.substr(name.lastIndexOf(",")+1, name.length).trim() + " " + // College of
+			name.substr(0, name.lastIndexOf(","));							// Education (etc.)
 }
 
+/**
+ * Clears all children of the SVG element
+ * 
+ * @return void 
+ */
+function clearGraph() {
+	d3.selectAll("svg#bar-chart > *").remove();
+}
+
+/**
+ * Create the DataTable 
+ * 
+ * @param {string}	Parsed CSV data from loadData()
+ * @return void
+ */
 function createTable(csvData) {
 	// Initialize DataTable
     var table = $('#salary-table').DataTable( {
 		data: csvData,
 		"columns": [
-			{ "data": "FIRST_LAST_INITIALS", "title": "Initials"},	
+			{ "data": "L_First", "title": "Name"},	
 			{ 
 				"data": "LONG_DESC", 
 				"title": "Description",
@@ -102,21 +106,6 @@ function createTable(csvData) {
 		responsive: true
 	});
 	
-	// var table = $('#salary-table').dataTable().api();
-	table.columns().eq(0).each( function ( index ) {
-	    // var column = table.column( index );
-	    // var data = column.data();
-	    
-	    console.log("column["+index+"]: ", table.column(index).responsiveHidden());
-	    
-	    if (table.column(index).responsiveHidden() == false) {
-	    	console.log("Column to hide: ", index);
-	    	$("#salary-table th input.table-search").eq(index).hide();	
-	    }
-	} );
-	
-	console.log("count: ", table.columns().eq(0).length);
-	
 	/*
 	* Responsive resizing listener
 	* https://datatables.net/reference/event/responsive-resize
@@ -137,19 +126,35 @@ function createTable(csvData) {
 	 * https://datatables.net/extensions/fixedheader/examples/options/columnFiltering.html
 	 */
 	var num_columns = $('#salary-table thead tr:eq(0) th').length;
-	$('#salary-table thead').append('<tr></tr>');
+	$('#salary-table thead').append('<tr role="row"></tr>');
 	for (var i=0; i < num_columns; i++) {
 		$('#salary-table thead tr:eq(1)').append('<th></th>');
 	}
     $('#salary-table thead tr:eq(1) th').each( function (i) {
-    	if (i == 0) {
-    		$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" />' );
-    	} else if (i == 4 || i == 5 || i == 6 || i == 7) {
-    		$(this).html( '<input type="text" class="table-search width-1" placeholder="Search" />' );
-    	} else {
-    		$(this).html( '<input type="text" class="table-search" placeholder="Search" />' );
+    	var hidden;
+    	if (table.column(i).responsiveHidden() == false) {
+    		hidden = true;
+    		$(this).hide();
     	}
-        
+    	if (i == 0) {
+    		if (hidden) {
+    			$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" style="display: none;" />' );	
+    		} else {
+				$(this).html( '<input type="text" class="table-search width-0" placeholder="Search" />' );	
+    		}
+    	} else if (i == 4 || i == 5 || i == 6 || i == 7) {
+    		if (hidden) {
+    			$(this).html( '<input type="text" class="table-search width-1" placeholder="Search" style="display: none;" />' );
+    		} else {
+    			$(this).html( '<input type="text" class="table-search width-1" placeholder="Search" />' );
+    		}
+    	} else {
+    		if (hidden) {
+    			$(this).html( '<input type="text" class="table-search" placeholder="Search" style="display: none;" />' );
+    		} else {
+    			$(this).html( '<input type="text" class="table-search" placeholder="Search" />' );
+    		}
+    	}
 		
         $( 'input', this ).on( 'keyup change', function () {
 			if ( table.column(i).search() !== this.value ) {
@@ -162,19 +167,46 @@ function createTable(csvData) {
     } );
 }
 
-function graph(data) {
-	/*
-	*	https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
-	*/
-	
+/**
+ * Takes a number representing a dollar amount and makes it more pretty
+ * 
+ * @link https://stackoverflow.com/a/149099/2307994
+ * 
+ * @param n	{string} Number of decimal places in output
+ * @param c {string} Decimal separator symbol
+ * @param d {string} Number separator symbol (,)
+ * @param t
+ * @return {string} A nicely formatted money string
+ */ 
+function formatMoney(n, c, d, t) {
+  var c = isNaN(c = Math.abs(c)) ? 2 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+/**
+ * Draw a graph with D3 to compare college vs base pay or YTD pay
+ * 
+ * @link https://blog.risingstack.com/d3-js-tutorial-bar-charts-with-javascript/
+ * @link https://stackoverflow.com/a/35690350/2307994
+ * 
+ * @param data		 {Array}  Data to use from loadData()
+ * @param xAxisLabel {string} Label to use for the X axis
+ * @return void
+ */ 
+function graph(data, xAxisLabel) {
 	const heightMargin = 50;
 	const widthMargin = 300;
     const width = 1200 - 2 * widthMargin;
     const height = 900 - 2 * heightMargin;
     
     const maxObj = data.reduce(function(max, obj) {
-    	// https://stackoverflow.com/a/35690350/2307994
-		return obj.avg_base > max.avg_base? obj : max;
+		return obj.avg > max.avg? obj : max;
 	});
 	
 	const svg = d3.select('svg#bar-chart');
@@ -184,12 +216,12 @@ function graph(data) {
     // Draw X axis
 	const xScale = d3.scaleLinear()
 	    .range([width, 0])
-	    .domain([maxObj.avg_base, 0]);
+	    .domain([maxObj.avg, 0]);
 
 	chart.append('g')
 	    .attr('transform', `translate(0, 0)`)
 	    .attr('class', 'x-axis')
-	    .call(d3.axisTop(xScale));
+	    .call(d3.axisTop(xScale).ticks(8));
     
     // Draw Y axis
     const yScale = d3.scaleBand()
@@ -224,22 +256,21 @@ function graph(data) {
 	    .attr('style', 'fill: #343a40')
 	    .attr('y', (s) => yScale(s.COL_DIV_CODE))
 	    .attr('x', 0)
-	    // .attr('width', (s) => width - xScale(s.BASE))
-	    .attr('width', (s) => xScale(s.avg_base))
+	    .attr('width', (s) => xScale(s.avg))
 	    .attr('height', yScale.bandwidth());
-	    
+	
+	// Draw value labels on the bars	    
 	svg.selectAll(".text")  		
 	  .data(data)
 	  .enter()
 	  .append("text")
 	  .attr("class","label")
 	  .attr("x", (function(d) { 
-	  	return widthMargin + (xScale(d.avg_base) / 2) - 30; 
+	  	return widthMargin + (xScale(d.avg) / 2) - 30; 
 	  }))
-	  //.attr("y", function(d) { return yScale(d.COL_DIV_CODE) + 36; })
 	  .attr("y", function(d) { return yScale(d.COL_DIV_CODE) + yScale.bandwidth() + 32; })
 	  .attr("dy", ".75em")
-	  .text(function(d) { return "$" + formatMoney(d.avg_base,2, ".", ","); });   	  
+	  .text(function(d) { return "$" + formatMoney(d.avg,2, ".", ","); });   	  
 	
 	d3.selectAll(".bar")
 	.on("mouseover", function() {
@@ -249,33 +280,34 @@ function graph(data) {
         d3.select(this).style("fill", "#343a40");
     });
 	    
-	// // Axis labels
 	// svg.append('text')
 	//     .attr('x', -(height / 2) - margin)
 	//     .attr('y', margin / 2.4)
 	//     .attr('transform', 'rotate(-90)')
 	//     .attr('text-anchor', 'middle')
 	//     .text('Base ($)');
-
+	
+	// x-axis label
 	svg.append('text')
 	    .attr('x', width / 2 + widthMargin)
 	    .attr('y', 0 + 10)
 	    .attr('text-anchor', 'middle')
-	    .text('Base Pay ($)');
+	    .attr('font-weight', '700')
+	    .text(xAxisLabel);
 	
 	
 	// Sort bars by value
 	
 	d3.select("#sort-value-asc").on("click", function() {
 		data.sort(function(a,b) {
-			return d3.ascending(a.avg_base, b.avg_base);
+			return d3.ascending(a.avg, b.avg);
 		});
 		changeSort();		
 	});
 	
 	d3.select("#sort-value-desc").on("click", function() {
 		data.sort(function(a,b) {
-			return d3.descending(a.avg_base, b.avg_base);
+			return d3.descending(a.avg, b.avg);
 		});
 		changeSort();		
 	});
@@ -310,7 +342,6 @@ function graph(data) {
 			.transition()
 			.duration(500)
 			.attr("y", function(d, i) {
-				console.log("moving text");
 				return yScale(d.COL_DIV_CODE) + 55;
 			})
 			
@@ -321,36 +352,25 @@ function graph(data) {
 	}
 }
 
-function renderMoney(data, type, row) {
-	if(type === "sort" || type === "type" || data == "") {
-		return data;
-	}
-	return "$" + formatMoney(data,2, ".", ",");
-}
-
-function formatMoney(n, c, d, t) {
-	/** https://stackoverflow.com/a/149099/2307994 **/
-  var c = isNaN(c = Math.abs(c)) ? 2 : c,
-    d = d == undefined ? "." : d,
-    t = t == undefined ? "," : t,
-    s = n < 0 ? "-" : "",
-    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
-    j = (j = i.length) > 3 ? j % 3 : 0;
-
-  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-};
-
-function groupByCollege(data) {
+/**
+ * Take the raw CSV data and group the rows into colleges and average pay
+ * 
+ * @param data		 {Array}  Data from loadData()
+ * @param columnName {String} Name of column to group on besides COL_DIV_CODE
+ * 
+ * @return {Array} An array of grouped data
+ */ 
+function groupByCollege(data, columnName) {
 	let averages = {};
 	for (var i = 0, len = data.length; i < len; i++) {
 		let element = data[i];
 		
 		if (averages[element.COL_DIV_CODE] == undefined) {
 			averages[element.COL_DIV_CODE] = {};
-			averages[element.COL_DIV_CODE]["sum"] = element.BASE;
+			averages[element.COL_DIV_CODE]["sum"] = element[columnName];
 			averages[element.COL_DIV_CODE]["count"] = 1;
 		} else {
-			averages[element.COL_DIV_CODE]["sum"] += element.BASE;
+			averages[element.COL_DIV_CODE]["sum"] += element[columnName];
 			averages[element.COL_DIV_CODE]["count"] += 1;
 		}
 		averages[element.COL_DIV_CODE]["average"] = averages[element.COL_DIV_CODE]["sum"] / averages[element.COL_DIV_CODE]["count"];
@@ -360,32 +380,63 @@ function groupByCollege(data) {
 	for(var college in averages) {
 		let collegeItem = {};
 		collegeItem["COL_DIV_CODE"] = cleanCollegeName(college);
-		collegeItem["avg_base"] = averages[college]["average"];
+		collegeItem["avg"] = averages[college]["average"];
 		returnAverages.push(collegeItem);
 	}
-	console.log(returnAverages);
 	
 	return returnAverages;
 }
 
-function findObjectByCollegeName(name, data) {
-	for (var i=0;i<data.length;i++) {
-		if (data[i].COL_DIV_CODE == name) {
-			return data[i]
-		}
+/**
+ * Loads the CSV data from file or LocalStorage
+ * 
+ * On first run, loads CSV data into LocalStorage and returns it.
+ * On subsequent runs, simply returns the data from LocalStorage
+ * 
+ * @param handleData {callback} Function to execute, passing in csvData 
+ * 
+ * @return void 
+ */ 
+function loadData(handleData) {
+	if (localStorage.getItem("csvData") !== null) {
+		handleData(JSON.parse(localStorage.getItem("csvData")));
+	} else {
+		$.ajax({
+	        type: "GET",
+	        url: "data/data_full.csv",
+	        dataType: "text",
+	        success: function(data) {
+				let csvData = $.csv.toObjects(data);
+				for (var i = csvData.length - 1; i >= 0; i--) {
+					if (csvData[i]["BASE"] !== undefined) {
+						csvData[i]["BASE"] = Number(csvData[i]["BASE"].replace("$", "").replace(",",""));
+					}
+					if (csvData[i]["YTD"] !== undefined) {
+						csvData[i]["YTD"] = Number(csvData[i]["YTD"].replace("$", "").replace(",",""));
+					}
+				}
+				localStorage.setItem("csvData", JSON.stringify(csvData));
+				handleData(csvData);
+	        },
+	        error: function(data) {
+	        	console.log("[loadData] Error loading data: ", data);
+	        }
+		});
 	}
 }
 
-function cleanCollegeName(name) {
-	// Take in college name like: 'Education, College of' 
-	// and return 'College of Education'
-	
-	let matches = name.match(/,.+ of/g);
-	
-	if (matches === null) {
-		return name;
+/**
+ * Renders money in a pretty format for DataTable
+ * 
+ * @param data
+ * @param type
+ * @param row
+ * 
+ * @return {string} A nicely formatted money string
+ */ 
+function renderMoney(data, type, row) {
+	if(type === "sort" || type === "type" || data == "") {
+		return data;
 	}
-	
-	return name.substr(name.lastIndexOf(",")+1, name.length).trim() + " " + // College of
-			name.substr(0, name.lastIndexOf(","));							// Education (etc.)
+	return "$" + formatMoney(data,2, ".", ",");
 }

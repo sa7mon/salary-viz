@@ -42,10 +42,42 @@ gulp.task('vendor-js', function(cb) {
     ], cb);
 });
 
+gulp.task('template-js', function(cb) {
+    pump([
+        gulp.src([
+            'src/js/jquery-3.3.1.min.js',
+            'src/js/bootstrap-4.2.1.bundle.min.js'
+        ]),
+        concat('template.min.js'),
+        gulp.dest('dist/js')        
+    ], cb);
+});
+
 gulp.task('app-css', function(cb) {
     pump([
         gulp.src(['src/css/*.css']),
         concat('app.min.css'),
+        uglifycss(),
+        gulp.dest('dist/css/')
+    ], cb); 
+});
+
+gulp.task('datatables-css', function(cb) {
+    pump([
+        gulp.src([
+            'src/css/dataTables_1.10.19.dataTables.bootstrap4.min.css',
+            'src/css/fixedHeader_3.1.5.fixedHeader.bootstrap4.min.css',
+            'src/css/responsive_2.2.3.responsive.bootstrap4.min.css'
+        ]),
+        concat('datatables.min.css'),
+        gulp.dest('dist/css')
+    ], cb); 
+});
+
+gulp.task('template-css', function(cb) {
+    pump([
+        gulp.src(['src/css/bootstrap-4.1.min.css']),
+        concat('template.min.css'),
         uglifycss(),
         gulp.dest('dist/css/')
     ], cb); 

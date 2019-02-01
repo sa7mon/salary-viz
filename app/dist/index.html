@@ -10,11 +10,11 @@
 
   <title>Salary Explorer</title>
 
-  <!-- Vendor CSS -->
-  <link rel="stylesheet" type="text/css" href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" />
+  <!-- Teamplate CSS -->
+  <link rel="stylesheet" type="text/css" href="css/template.min.css" />
 
   <!-- Custom styles for this template -->
-  <link href="css/app.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/app.min.css" >
 </head>
 
   <body>
@@ -52,7 +52,7 @@
         </ul>
       </div>
       
-      <div class="author">
+      <div class="author d-md-block">
         &copy; Dan Salmon - MIT license
       </div>
     </nav>
@@ -61,17 +61,26 @@
       <div class="row">
         <main role="main" class="col-lg-10 px-4">
           <div class="container">
-            <h1 class="display-4">Welcome</h1>
+            <h1 class="display-4">&#9733;Welcome</h1>
             <p class="lead">This is an app to explore MNSU salary data. Please use the links above to view the data.</p>
+            <hr class="my-4">
+            <p>This project was completed to fulfill a requirement for IT680 - Software Engineering Project.
+            It is a static website utilizing the following Javascript frameworks/libraries:
+            <ul>
+              <li>D3.js</li>
+              <li>Moment.js</li>
+              <li>Bootstrap 4.1</li>
+              <li>jQuery</li>
+              <li>DataTables</li>
+            </ul>
+            </p>
           </div>
         </main>
       </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha256-WHwIASWxNdKakx7TceUP/BqWQYMcEIfeLNdFMoFfRWA=" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <!-- Bootstrap & jQuery JS -->
+    <script src="js/template.min.js"></script>
 
   </body>
 </html>
