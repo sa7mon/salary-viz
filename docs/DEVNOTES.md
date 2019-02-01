@@ -1,5 +1,11 @@
 # Dev Notes
-Lessons learned (plans, successes, mistakes, improvements)
+
+## Lessons Learned
+* Making the chart took longer than expected
+* Should really have used a static site generator, just didn't want to take the time to learn a templating language
+* Took too much time initally trying to perfect initial design idea when I ended up scrapping some of it anyway. Should have focused on getting the functionality down first. Downside to an iterative approach.
+* StackOverflow is a great resource for posting exact, detailed questions (code fixed in ~ 30 mins)
+
 
 ## Project Log
 
