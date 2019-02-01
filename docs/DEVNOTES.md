@@ -85,5 +85,7 @@ Lessons learned (plans, successes, mistakes, improvements)
 * Add v2 of the csv data and edit the column name to use it
 * Tried adding a loading icon to show while the table was being generated but the table generates fast enough that the icon doesn't even show before the table appears. Scapped that issue.
 * Bold the x-axis label
-
+* Added some classes to the author section of the navbar to hide it on smaller screens
+* Got table to be responsive by hiding the search inputs on screens smaller than 1200px. That's when things start to crowd.
+* Cleaned up, documented functions, merged final PR, and pushed to AWS
 
